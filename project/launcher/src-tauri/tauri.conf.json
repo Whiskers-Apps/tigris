@@ -13,12 +13,22 @@
     "windows": [
       {
         "title": "tigris-launcher",
-        "width": 800,
-        "height": 600
+        "width": 900,
+        "height": 660,
+        "center": true,
+        "transparent": true,
+        "maximizable": false,
+        "resizable": false,
+        "alwaysOnTop": true,
+        "decorations": false
       }
     ],
     "security": {
-      "csp": null
+      "csp": null,
+      "assetProtocol": {
+        "enable": true,
+        "scope": ["**/*", "$HOME", "$HOME/**", "$HOME/.config/**", "$HOME/.local/**", "$HOME/.icons/**", "$APPDATA/assets/*"]
+      }
     }
   },
   "bundle": {

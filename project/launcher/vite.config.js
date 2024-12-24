@@ -1,12 +1,13 @@
 import { defineConfig } from "vite";
 import { sveltekit } from "@sveltejs/kit/vite";
+import svg from '@poppanator/sveltekit-svg'
 
 // @ts-expect-error process is a nodejs global
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
-  plugins: [sveltekit()],
+  plugins: [sveltekit(), svg()],
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
