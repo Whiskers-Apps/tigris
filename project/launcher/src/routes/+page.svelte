@@ -34,13 +34,14 @@
         </div>
       {/if}
 
-      <div class="w-full flex-grow ">
+      <div class="w-full flex-grow">
         {#each $state.results as result, index}
           <div
-            class={`h-[60px] p-4 flex items-center rounded-lg space-x-4 ${$state.selectedIndex === index ? "bg-secondary" : ""}`}
+            class={`h-[60px] p-4 flex items-center result-radius space-x-4 ${$state.selectedIndex === index ? "bg-secondary" : ""}`}
           >
             {#if result.icon_path !== null}
               <img
+                class="icon-radius"
                 src={convertFileSrc(result.icon_path)}
                 alt="icon"
                 height="32"
@@ -65,7 +66,7 @@
 
     {#if $state.totalResultsCount > 0}
       <HorizontalDivider />
-      
+
       <div class="p-6">
         <p>Results: {$state.totalResultsCount}</p>
       </div>

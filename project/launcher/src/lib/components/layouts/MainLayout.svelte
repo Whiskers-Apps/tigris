@@ -10,7 +10,7 @@
 {#if !$state.loading}
   {@html $state.css}
 
-  <div class="w-full h-screen rounded-2xl border border-secondary text-text overflow-clip">
+  <div class="w-full h-screen box-radius border border-secondary text-text overflow-clip">
     <div class="w-full h-full overflow-clip bg-background">
       <slot />
     </div>

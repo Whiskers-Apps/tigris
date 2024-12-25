@@ -1,4 +1,4 @@
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use sniffer_rs::sniffer::Sniffer;
 use tigris_rs::features::{

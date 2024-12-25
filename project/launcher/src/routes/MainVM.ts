@@ -1,4 +1,5 @@
 import type { SearchResult } from "$lib/features/Results";
+import { Routes } from "$lib/features/Routes";
 import { getCssFilter } from "$lib/features/Theming";
 import { event } from "@tauri-apps/api";
 import { invoke } from "@tauri-apps/api/core";
@@ -140,8 +141,6 @@ export function onRunAction() {
   let result = newState.results[newState.selectedIndex];
   let action = result.action;
 
-  console.log(action);
-
   if (action !== null) {
     if (!newState.askConfirmation) {
       if (action.require_confirmation) {
@@ -149,7 +148,7 @@ export function onRunAction() {
         state.set(newState);
       } else {
         if (action.action_type === "OpenSettings") {
-          window.location.replace("/settings");
+          window.location.replace(Routes.SETTINGS);
           return;
         }
         

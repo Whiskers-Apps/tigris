@@ -4204,6 +4204,7 @@ dependencies = [
  "freedesktop-desktop-entry",
  "serde",
  "tux-icons",
+ "walkdir",
 ]
 
 [[package]]

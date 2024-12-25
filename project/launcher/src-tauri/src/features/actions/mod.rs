@@ -62,3 +62,10 @@ fn open_app(path: String, window: &Window) {
 
     window.close().unwrap();
 }
+
+#[tauri::command()]
+pub fn invoke_open_link(link: String) {
+    thread::spawn(move || {
+        open::that(link).expect("Error opening link");
+    });
+}
