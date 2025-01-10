@@ -1,9 +1,3 @@
-// =================================================================
-// ==== Interfaces
-// =================================================================
-
-import { invoke } from "@tauri-apps/api/core";
-
 export interface Settings {
   show_recent_apps: boolean;
   box_border_radius: number;
@@ -18,6 +12,7 @@ export interface Settings {
   extension_values: ExtensionValue[];
   search_engines: SearchEngine[];
   default_search_engine: number;
+  blacklist: string[];
 }
 
 export interface Theme {
@@ -45,16 +40,4 @@ export interface SearchEngine {
   keyword: string;
   name: string;
   query: string;
-}
-
-// =================================================================
-// ==== Methods
-// =================================================================
-
-export async function getSettings(): Promise<Settings> {
-  return await invoke("invoke_get_settings");
-}
-
-export async function writeSettings(settings: Settings) {
-  invoke("invoke_write_settings", { settings: settings });
 }

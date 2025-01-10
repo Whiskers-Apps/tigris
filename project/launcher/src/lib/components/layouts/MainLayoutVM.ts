@@ -1,19 +1,25 @@
-import { getSettings, type Settings, type Theme } from "$lib/features/Settings";
+import type { Settings } from "$lib/features/Settings";
 import { get, writable } from "svelte/store";
-
+import { getSettings, load as loadSettings } from "$lib/repositories/SettingsRepository";
 export const state = writable({
   loading: true,
-  settings: {} as Settings,
   css: "",
 });
 
 export async function load() {
+  await loadSettings();
+
   let newState = get(state);
 
-  newState.settings = await getSettings();
-  newState.css = getCss(newState.settings);
   newState.loading = false;
+  newState.css = getCss(getSettings());
 
+  state.set(newState);
+}
+
+export function refreshCSS() {
+  let newState = get(state);
+  newState.css = getCss(getSettings());
   state.set(newState);
 }
 
@@ -34,6 +40,7 @@ function getCss(settings: Settings): string {
     --tertiary-text: ${settings.theme.tertiary_text};
     --disabled-text: ${settings.theme.disabled_text};
     --box-radius: ${settings.box_border_radius}px;
+    --box-border-width: ${settings.border_width}px;
     --result-radius: ${settings.result_border_radius}px;
     --icon-radius: ${settings.icon_border_radius}px;
 }
@@ -48,11 +55,19 @@ function getCss(settings: Settings): string {
     background-color: var(--accent);
 }
 
+.bg-danger{
+    background-color: var(--danger);
+}
+
 .bg-background{
     background-color: var(--background);
 }
 
 .bg-secondary{
+    background-color: var(--secondary-background);
+}
+
+.hover-bg-secondary:hover{
     background-color: var(--secondary-background);
 }
 
@@ -75,6 +90,14 @@ function getCss(settings: Settings): string {
     border-color: var(--secondary-background);
 }
 
+.box-border{
+    /*border: var(--box-border-width) solid var(${
+      settings.accent_border ? "--accent" : "bg-secondary"
+    });*/
+    border: var(--box-border-width) solid var(${
+      settings.accent_border ? "--accent" : "--secondary-background"
+    });
+}
 
 /* 
 ======================================================
@@ -88,6 +111,14 @@ function getCss(settings: Settings): string {
 
 .text-on-accent{
     color: var(--on-accent);
+}
+
+.text-danger{
+    color: var(--danger);
+}
+
+.text-on-danger{
+    color: var(--on-danger);
 }
 
 .text-text{

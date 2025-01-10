@@ -1,6 +1,6 @@
 use std::fs::create_dir_all;
 
-use tigris_rs::features::paths::{get_cache_dir, get_extensions_dir, get_local_dir, get_tmp_dir};
+use tigris_rs::features::paths::{get_cache_dir, get_config_dir, get_extensions_dir, get_local_dir, get_tmp_dir};
 
 pub fn setup_dirs() {
     let local_dir = get_local_dir();
@@ -25,7 +25,7 @@ pub fn setup_dirs() {
         create_dir_all(&extensions_dir).expect("Error creating extensions directory");
     }
 
-    if !config_dir.exist() {
+    if !config_dir.exists() {
         create_dir_all(&config_dir).expect("Error creating config directory");
     }
 }

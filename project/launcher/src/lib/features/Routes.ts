@@ -1,4 +1,6 @@
 export const Routes = {
     SEARCH: "/",
-    SETTINGS: "/settings"
+    SETTINGS: "/settings",
+    ADD_SEARCH_ENGINE: "/settings/add-search-engine",
+    FORM: "/form"
 }

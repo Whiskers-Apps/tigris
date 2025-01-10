@@ -1,10 +1,10 @@
 import type { SearchResult } from "$lib/features/Results";
 import { Routes } from "$lib/features/Routes";
 import { getCssFilter } from "$lib/features/Theming";
-import { event } from "@tauri-apps/api";
 import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { get, writable } from "svelte/store";
+import { getSettings, settings } from "$lib/repositories/SettingsRepository";
 
 export const state = writable({
   loading: true,
@@ -41,14 +41,12 @@ function getSlicedResults(offset: number): SearchResult[] {
 }
 
 export function getColorFilter(tint: string | null): string {
-  //let currentSettings = get(state).settings;
-
   if (tint === null) {
     return "none";
   }
 
   if (tint === "accent") {
-    return getCssFilter("#FFE072");
+    return getCssFilter(getSettings().theme.accent);
   }
 
   return getCssFilter(tint);
@@ -68,6 +66,7 @@ export async function onSearchInput(text: string) {
   newState.searchText = text;
   newState.results = getSlicedResults(0);
   newState.totalResultsCount = results.length;
+  newState.askConfirmation = false;
 
   state.set(newState);
 }
@@ -136,6 +135,26 @@ export function onGoUp() {
   state.set(newState);
 }
 
+export function onResultHover(index: number) {
+  let newState = get(state);
+  newState.selectedIndex = index;
+  newState.askConfirmation = false;
+  state.set(newState);
+}
+
+export function onSelectResult(index: number, fromShortcut: boolean = false) {
+  let actualIndex = fromShortcut ? index - 1 : index;
+  let newState = get(state);
+
+  if (actualIndex < newState.results.length) {
+    newState.selectedIndex = actualIndex;
+
+    state.set(newState);
+
+    onRunAction();
+  }
+}
+
 export function onRunAction() {
   let newState = get(state);
   let result = newState.results[newState.selectedIndex];
@@ -151,8 +170,12 @@ export function onRunAction() {
           window.location.replace(Routes.SETTINGS);
           return;
         }
-        
+
         invoke("invoke_run_action", { action: action });
+
+        if (action.action_type === "OpenForm") {
+          window.location.replace(Routes.FORM);
+        }
       }
     } else {
       newState.askConfirmation = false;
@@ -193,14 +216,14 @@ window.addEventListener("keydown", (event) => {
   }
 
   if (event.altKey && ["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key)) {
-    // if (get(state).settings.launch_key === "Alt") {
-    //   onSelectResult(+event.key - 1);
-    // }
+    if (getSettings().shortcut_key === "alt") {
+      onSelectResult(+event.key, true);
+    }
   }
 
   if (event.ctrlKey && ["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key)) {
-    // if (get(state).settings.launch_key === "Ctrl") {
-    //   onSelectResult(+event.key - 1);
-    // }
+    if (getSettings().shortcut_key === "ctrl") {
+      onSelectResult(+event.key, true);
+    }
   }
 });

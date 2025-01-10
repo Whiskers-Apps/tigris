@@ -27,7 +27,7 @@ export interface OpenAppAction {
 
 export interface OpenFormAction {
   extension_id: string;
-  extension_action: string;
+  form_id: string;
   args: string[];
   title: string;
   fields: Field[];
@@ -50,10 +50,8 @@ export interface Field {
 
 export interface FieldValidation {
   only_numbers: boolean;
-  only_url: boolean;
   not_empty: boolean;
   max_characters: number;
-  regex: string | null;
 }
 
 export interface TextField {
@@ -74,8 +72,8 @@ export interface SelectField {
 }
 
 export interface SelectFieldValue {
-  value: string;
-  display_text: string;
+  id: string;
+  text: string;
 }
 
 export interface SwitchField {
@@ -91,8 +89,9 @@ export interface SliderField {
 
 export interface FileSystemField {
   value: string;
-  pick_directory: string;
+  pick_directory: boolean;
   filters: string[] | null;
+  validation: FieldValidation | null;
 }
 
 export interface RunExtensionAction {

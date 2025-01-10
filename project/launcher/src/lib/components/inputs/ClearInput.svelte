@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
-  let dispatch = createEventDispatcher();
+  const props = $props<{
+    placeholder: string;
+    value: string;
+    oninput: (value: string) => void;
+  }>();
 
-  let { placeholder, value } = $props();
-
-
+  let { placeholder, value, oninput } = props;
 </script>
 
 <!-- svelte-ignore a11y_autofocus -->
@@ -13,7 +14,7 @@
   type="text"
   {placeholder}
   {value}
-  oninput={(e) => dispatch("input", e.currentTarget.value)}
+  oninput={(e) => oninput(e.currentTarget.value)}
   autofocus
 />
 

@@ -7,6 +7,9 @@
   import { onMount } from "svelte";
   import { load, onGoBack, onSelectTab, state } from "./SettingsVM";
   import AboutPage from "./tabs/about/AboutPage.svelte";
+  import ExtensionsPage from "./tabs/extensions/ExtensionsPage.svelte";
+  import SearchPage from "./tabs/search/SearchPage.svelte";
+  import StylePage from "./tabs/style/StylePage.svelte";
 
   onMount(() => {
     load();
@@ -14,50 +17,57 @@
 </script>
 
 <MainLayout>
-  <div class="flex flex-col h-full">
-    <div class="p-6 flex space-x-4">
-      <BackButton
-        onclick={() => onGoBack()}
-      />
+  <div class="flex flex-col h-screen overflow-hidden">
+    <div class="flex p-6 space-x-4">
+      <BackButton onclick={() => onGoBack()} />
 
       <HeaderTitle title="Settings" />
     </div>
 
     <HorizontalDivider />
 
-    <div class="flex flex-grow">
-      <div class="w-[240px] p-2 navbar-border space-y-2">
+    <div class="flex-grow flex flex-1 min-h-0">
+      <div class="navbar w-[240px] overflow-auto p-4 navbar-border space-y-1">
         <button
-          class={$state.activeTab === 0 ? "active-tab tab" : "tab"}
+          class={`${$state.activeTab === 0 ? "tab active-tab" : "tab"}`}
           onclick={() => onSelectTab(0)}
         >
           <p>About</p>
         </button>
-
+        
         <button
-          class={$state.activeTab === 1 ? "active-tab tab" : "tab"}
+          class={`${$state.activeTab === 1 ? "tab active-tab" : "tab"}`}
           onclick={() => onSelectTab(1)}
         >
           <p>Search</p>
         </button>
-
+        
         <button
-          class={$state.activeTab === 2 ? "active-tab tab" : "tab"}
+          class={`${$state.activeTab === 2 ? "tab active-tab" : "tab"}`}
           onclick={() => onSelectTab(2)}
         >
           <p>Style</p>
         </button>
 
         <button
-          class={$state.activeTab === 3 ? "active-tab tab" : "tab"}
+          class={`${$state.activeTab === 3 ? "tab active-tab" : "tab"}`}
           onclick={() => onSelectTab(3)}
         >
           <p>Extensions</p>
         </button>
       </div>
-      <div class="flex-grow p-2">
+      <div class="flex-1 overflow-auto break-all p-4 min-h-0">
         {#if $state.activeTab === 0}
           <AboutPage/>
+        {/if}
+        {#if $state.activeTab === 1}
+          <SearchPage/>
+        {/if}
+        {#if $state.activeTab === 2}
+          <StylePage/>
+        {/if}
+        {#if $state.activeTab === 3}
+          <ExtensionsPage/>
         {/if}
       </div>
     </div>

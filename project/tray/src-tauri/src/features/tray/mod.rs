@@ -1,8 +1,11 @@
-use std::process::exit;
+use std::{process::exit, thread};
 
 use tauri::{
-    menu::{Menu, MenuItem}, tray::TrayIconBuilder, App
+    menu::{Menu, MenuItem},
+    tray::TrayIconBuilder,
+    App,
 };
+use tigris_rs::features::indexing::{index_apps, index_extensions};
 
 pub fn setup_tray(app: &App) {
     let show_menu_item = MenuItem::with_id(app, "show", "Show", true, None::<&str>).unwrap();
@@ -19,7 +22,12 @@ pub fn setup_tray(app: &App) {
         .menu_on_left_click(true)
         .on_menu_event(|app, event| match event.id.as_ref() {
             "show" => {}
-            "refresh" => {}
+            "refresh" => {
+                thread::spawn(move || {
+                    index_apps();
+                    index_extensions();
+                });
+            }
             "quit" => {
                 app.cleanup_before_exit();
                 exit(0);

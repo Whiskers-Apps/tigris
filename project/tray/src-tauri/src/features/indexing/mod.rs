@@ -9,7 +9,7 @@ pub fn setup_indexing() {
     thread::spawn(move || loop {
         index_apps();
         index_extensions();
-        
+
         sleep(Duration::from_secs(180));
     });
 }

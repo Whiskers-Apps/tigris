@@ -3,9 +3,19 @@
   import ClearInput from "$lib/components/inputs/ClearInput.svelte";
   import { onMount } from "svelte";
   import MainLayout from "../lib/components/layouts/MainLayout.svelte";
-  import { getColorFilter, load, onSearchInput, state } from "./MainVM";
+  import {
+    getColorFilter,
+    load,
+    onResultHover,
+    onSearchInput,
+    onSelectResult,
+    state,
+  } from "./MainVM";
   import CatIcon from "$lib/icons/cat.svg?component";
+  import WarningIcon from "$lib/icons/warning.svg?component";
   import { convertFileSrc } from "@tauri-apps/api/core";
+  import { getUpperCasedFirstLetter } from "$lib/utils/TextFormatting";
+  import { settings } from "$lib/repositories/SettingsRepository";
 
   onMount(() => {
     load();
@@ -13,13 +23,13 @@
 </script>
 
 <MainLayout>
-  <div class="flex flex-col h-screen">
+  <div class="flex flex-col flex-grow">
     <div class="p-6">
       <ClearInput
         placeholder="Search for apps, web and extensions"
         value={$state.searchText}
-        on:input={(e) => {
-          onSearchInput(e.detail);
+        oninput={(value) => {
+          onSearchInput(value);
         }}
       />
     </div>
@@ -36,30 +46,50 @@
 
       <div class="w-full flex-grow">
         {#each $state.results as result, index}
-          <div
-            class={`h-[60px] p-4 flex items-center result-radius space-x-4 ${$state.selectedIndex === index ? "bg-secondary" : ""}`}
-          >
-            {#if result.icon_path !== null}
-              <img
-                class="icon-radius"
-                src={convertFileSrc(result.icon_path)}
-                alt="icon"
-                height="32"
-                width="32"
-                style="filter: {result.icon_color === 'accent'
-                  ? $state.accentFilter
-                  : getColorFilter(result.icon_color)}"
-              />
-            {/if}
-            <div class="flex-grow">
-              <p class="">{result.title}</p>
-
-              {#if result.description !== null}
-                <p class=" text-[0.8rem] text-secondary">{result.description}</p>
-              {/if}
+          {#if $state.askConfirmation && $state.selectedIndex === index}
+            <div
+              class="h-[60px] w-full p-4 flex items-center result-radius space-x-4 bg-danger text-on-danger font-bold"
+            >
+              <WarningIcon class="h-[32px] w-[32px]" />
+              <p>Confirm Action</p>
             </div>
-            <p class="text-accent">Alt + {index + 1}</p>
-          </div>
+          {:else}
+            <button
+              class={`h-[60px] w-full p-4 flex items-center result-radius space-x-4 ${$state.selectedIndex === index ? "bg-secondary" : ""}`}
+              onmouseover={() => {
+                onResultHover(index);
+              }}
+              onfocus={() => {}}
+              onclick={() => {
+                onSelectResult(index);
+              }}
+            >
+              {#if result.icon_path !== null}
+                <img
+                  class="icon-radius"
+                  src={convertFileSrc(result.icon_path)}
+                  alt="icon"
+                  height="32"
+                  width="32"
+                  style="filter: {result.icon_color === 'accent'
+                    ? $state.accentFilter
+                    : getColorFilter(result.icon_color)}"
+                />
+              {/if}
+              <div class="flex-grow text-start">
+                <p class="">{result.title}</p>
+
+                {#if result.description !== null}
+                  <p class=" text-[0.8rem] text-secondary">{result.description}</p>
+                {/if}
+              </div>
+              {#if $settings.show_shortcut_hint}
+                <p class="text-accent">
+                  {getUpperCasedFirstLetter($settings.shortcut_key)} + {index + 1}
+                </p>
+              {/if}
+            </button>
+          {/if}
         {/each}
       </div>
     </div>

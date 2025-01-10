@@ -10,9 +10,9 @@
 {#if !$state.loading}
   {@html $state.css}
 
-  <div class="w-full h-screen box-radius border border-secondary text-text overflow-clip">
-    <div class="w-full h-full overflow-clip bg-background">
-      <slot />
-    </div>
+  <div
+    class="bg-background box-radius box-border h-screen w-full flex-grow flex flex-col text-text"
+  >
+    <slot />
   </div>
 {/if}

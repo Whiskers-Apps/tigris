@@ -1,22 +1,52 @@
 use std::{path::PathBuf, process::Command, thread};
 
+use serde::{Deserialize, Serialize};
 use tauri::Window;
 use tigris_rs::features::{
-    actions::{ActionType, ResultAction},
+    actions::{ActionType, CopyImageAction, CopyTextAction, ResultAction, RunExtensionAction},
+    api::{write_extension_request, write_form, ExtensionRequest},
     apps::{get_apps, get_recent_apps, write_recent_apps, App},
+    extensions::get_extension_dir,
 };
 
 #[tauri::command()]
 pub fn invoke_run_action(action: ResultAction, window: Window) {
     match action.action_type {
-        ActionType::CopyText => {}
-        ActionType::CopyImage => {}
+        ActionType::CopyText => copy_text(action.copy_text_action.unwrap(), &window),
+        ActionType::CopyImage => copy_image(action.copy_image_action.unwrap(), &window),
         ActionType::OpenApp => open_app(action.open_app_action.unwrap().path, &window),
-        ActionType::OpenForm => {}
-        ActionType::OpenLink => {}
-        ActionType::RunExtension => {}
+        ActionType::OpenLink => open_link(action.open_link_action.unwrap().link, &window),
+        ActionType::RunExtension => run_extension(action.run_extension_action.unwrap(), &window),
+        ActionType::OpenForm => write_form(&action.open_form_action.unwrap()),
         _ => {}
     };
+}
+
+fn copy_text(action: CopyTextAction, window: &Window) {
+    thread::spawn(move || {
+        Command::new("sh")
+            .arg("-c")
+            .arg(format!("wl-copy '{}'", &action.text))
+            .spawn()
+            .expect("Error writing to clipboard");
+    });
+
+    window.close().unwrap();
+}
+
+fn copy_image(action: CopyImageAction, window: &Window) {
+    thread::spawn(move || {
+        Command::new("sh")
+            .arg("-c")
+            .arg(format!(
+                "cat {} | wl-copy --type image/png",
+                &action.image_path
+            ))
+            .spawn()
+            .expect("Error copying image");
+    });
+
+    window.close().unwrap();
 }
 
 fn open_app(path: String, window: &Window) {
@@ -63,9 +93,37 @@ fn open_app(path: String, window: &Window) {
     window.close().unwrap();
 }
 
+fn open_link(link: String, window: &Window) {
+    thread::spawn(move || {
+        open::that(link).expect("Error opening link");
+    });
+
+    window.close().unwrap();
+}
+
+fn run_extension(action: RunExtensionAction, window: &Window) {
+    let request =
+        ExtensionRequest::new_run_extension_action_request(&action.extension_action, &action.args);
+
+    write_extension_request(&request);
+
+    thread::spawn(move || {
+        Command::new("sh")
+            .arg("-c")
+            .arg("./extension")
+            .current_dir(get_extension_dir(&action.extension_id).unwrap())
+            .output()
+            .expect("Error running extension");
+    });
+
+    window.close().unwrap();
+}
+
 #[tauri::command()]
 pub fn invoke_open_link(link: String) {
     thread::spawn(move || {
         open::that(link).expect("Error opening link");
     });
 }
+
+
