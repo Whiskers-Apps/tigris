@@ -6,6 +6,7 @@
     getSelectValues,
     getSettingValue,
     load,
+    onOpenExtensionsDir,
     onSetSettingValue,
     state,
   } from "./ExtensionsPageVM";
@@ -26,6 +27,12 @@
   <div class="flex space-x-4">
     <TextButton text="Store" onclick={() => {}} />
     <TextButton text="Refresh" onclick={() => {}} />
+    <TextButton
+      text="Folder"
+      onclick={() => {
+        onOpenExtensionsDir();
+      }}
+    />
   </div>
   <div class="space-y-6 mt-4">
     {#each $state.extensions as extension}

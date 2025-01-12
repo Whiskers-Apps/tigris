@@ -3,7 +3,7 @@ import { type ExtensionValue } from "$lib/features/Settings";
 import { invoke } from "@tauri-apps/api/core";
 import { get, writable } from "svelte/store";
 import type { SelectValue } from "$lib/components/form/helper-classes/SelectValue";
-import { getSettings,writeSettings } from "$lib/repositories/SettingsRepository";
+import { getSettings, writeSettings } from "$lib/repositories/SettingsRepository";
 
 export const state = writable({
   loading: true,
@@ -122,4 +122,8 @@ export function getSelectValues(extensionId: string, settingId: string): SelectV
   }
 
   return values;
+}
+
+export async function onOpenExtensionsDir() {
+  invoke("invoke_open_extensions_dir");
 }

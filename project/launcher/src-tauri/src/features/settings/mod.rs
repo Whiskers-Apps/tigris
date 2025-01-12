@@ -3,6 +3,7 @@ use std::{fs, path::PathBuf};
 use tigris_rs::features::{
     apps::{get_apps, App},
     extensions::{get_extensions, Extension},
+    paths::get_extensions_dir,
     settings::{get_settings, write_settings, Settings, Theme},
 };
 
@@ -67,4 +68,9 @@ pub fn invoke_import_theme(path: PathBuf) {
 
         write_settings(&settings);
     }
+}
+
+#[tauri::command()]
+pub fn invoke_open_extensions_dir() {
+    open::that(&get_extensions_dir()).expect("Error opening extensions dir");
 }

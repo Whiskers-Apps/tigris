@@ -40,7 +40,7 @@
 <p class="text-secondary">{description}</p>
 <div class="space-x-4 pt-2 pb-2 pl-3 pr-3 border border-secondary flex rounded-lg">
   <button
-    class="flex-grow flex space-x-4"
+    class="flex-1 flex space-x-4"
     onclick={() => {
       onSelectFile();
     }}

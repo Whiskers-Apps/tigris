@@ -23,8 +23,8 @@
 </script>
 
 <MainLayout>
-  <div class="flex flex-col flex-grow">
-    <div class="p-6">
+  <div class="flex flex-col flex-1">
+    <div class="p-5 pl-6 pr-6">
       <ClearInput
         placeholder="Search for apps, web and extensions"
         value={$state.searchText}
@@ -36,7 +36,7 @@
 
     <HorizontalDivider />
 
-    <div class="flex-grow w-full p-4 flex flex-col justify-center">
+    <div class="flex-1 w-full p-4 flex flex-col justify-center">
       {#if $state.totalResultsCount === 0}
         <div class="flex flex-col h-full items-center justify-center">
           <CatIcon />
@@ -44,7 +44,7 @@
         </div>
       {/if}
 
-      <div class="w-full flex-grow">
+      <div class="w-full flex-1">
         {#each $state.results as result, index}
           {#if $state.askConfirmation && $state.selectedIndex === index}
             <div
@@ -66,7 +66,7 @@
             >
               {#if result.icon_path !== null}
                 <img
-                  class="icon-radius"
+                  class="icon-radius flex-shrink-0"
                   src={convertFileSrc(result.icon_path)}
                   alt="icon"
                   height="32"
@@ -76,15 +76,15 @@
                     : getColorFilter(result.icon_color)}"
                 />
               {/if}
-              <div class="flex-grow text-start">
+              <div class="flex-1 overflow-hidden text-start min-w-0">
                 <p class="">{result.title}</p>
 
                 {#if result.description !== null}
-                  <p class=" text-[0.8rem] text-secondary">{result.description}</p>
+                  <p class=" text-[0.8rem] ">{result.description}</p>
                 {/if}
               </div>
               {#if $settings.show_shortcut_hint}
-                <p class="text-accent">
+                <p class="text-accent flex-shrink-0">
                   {getUpperCasedFirstLetter($settings.shortcut_key)} + {index + 1}
                 </p>
               {/if}
@@ -97,7 +97,7 @@
     {#if $state.totalResultsCount > 0}
       <HorizontalDivider />
 
-      <div class="p-6">
+      <div class="p-5 pl-6 pr-6">
         <p>Results: {$state.totalResultsCount}</p>
       </div>
     {/if}

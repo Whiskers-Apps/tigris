@@ -26,22 +26,22 @@
 
     <HorizontalDivider />
 
-    <div class="flex-grow flex flex-1 min-h-0">
-      <div class="navbar w-[240px] overflow-auto p-4 navbar-border space-y-1">
+    <div class="flex flex-1 min-h-0">
+      <div class="navbar w-fit overflow-auto p-4 navbar-border space-y-1">
         <button
           class={`${$state.activeTab === 0 ? "tab active-tab" : "tab"}`}
           onclick={() => onSelectTab(0)}
         >
           <p>About</p>
         </button>
-        
+
         <button
           class={`${$state.activeTab === 1 ? "tab active-tab" : "tab"}`}
           onclick={() => onSelectTab(1)}
         >
           <p>Search</p>
         </button>
-        
+
         <button
           class={`${$state.activeTab === 2 ? "tab active-tab" : "tab"}`}
           onclick={() => onSelectTab(2)}
@@ -58,16 +58,16 @@
       </div>
       <div class="flex-1 overflow-auto break-all p-4 min-h-0">
         {#if $state.activeTab === 0}
-          <AboutPage/>
+          <AboutPage />
         {/if}
         {#if $state.activeTab === 1}
-          <SearchPage/>
+          <SearchPage />
         {/if}
         {#if $state.activeTab === 2}
-          <StylePage/>
+          <StylePage />
         {/if}
         {#if $state.activeTab === 3}
-          <ExtensionsPage/>
+          <ExtensionsPage />
         {/if}
       </div>
     </div>
@@ -77,6 +77,10 @@
 <style scoped>
   .navbar-border {
     border-right: 1px solid var(--secondary-background);
+  }
+
+  .navbar{
+    width: 240px;
   }
 
   .tab {

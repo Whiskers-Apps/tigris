@@ -8,7 +8,7 @@
   const { value = $bindable(), name, oninput }: Props = $props();
 </script>
 
-<div class=" flex flex-col flex-grow">
+<div class=" flex flex-col flex-1">
   <input
     class=" h-[100px] class rounded-lg hover:brightness-90 border-tertiary cursor-pointer w-full border border-secondary"
     style={`background-color: ${value}`}
@@ -18,7 +18,7 @@
       oninput(event.currentTarget.value);
     }}
   />
-  <p class=" flex-grow text-center">{name}</p>
+  <p class=" flex-1 text-center">{name}</p>
 </div>
 
 <style scoped>

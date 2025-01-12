@@ -1,4 +1,7 @@
-use std::{process::exit, thread};
+use std::{
+    process::{exit, Command},
+    thread,
+};
 
 use tauri::{
     menu::{Menu, MenuItem},
@@ -21,7 +24,15 @@ pub fn setup_tray(app: &App) {
         .menu(&menu)
         .menu_on_left_click(true)
         .on_menu_event(|app, event| match event.id.as_ref() {
-            "show" => {}
+            "show" => {
+                thread::spawn(move || {
+                    Command::new("sh")
+                        .arg("-c")
+                        .arg("WEBKIT_DISABLE_COMPOSITING_MODE=1 GDK_BACKEND=x11 tigris-launcher")
+                        .output()
+                        .expect("Error opening launcher");
+                });
+            }
             "refresh" => {
                 thread::spawn(move || {
                     index_apps();

@@ -11,7 +11,7 @@
   {@html $state.css}
 
   <div
-    class="bg-background box-radius box-border h-screen w-full flex-grow flex flex-col text-text"
+    class="bg-background box-radius box-border h-screen w-full flex-1 flex flex-col text-text"
   >
     <slot />
   </div>

@@ -36,7 +36,7 @@
         }}
       />
 
-      <div class="flex-grow"></div>
+      <div class="flex-1"></div>
 
       <DangerButton text="Delete" onclick={() => onShowDeleteDialog()} />
 

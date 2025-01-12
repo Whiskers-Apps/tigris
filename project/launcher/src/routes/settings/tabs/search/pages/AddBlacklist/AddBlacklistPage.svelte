@@ -20,7 +20,7 @@
         }}
       />
 
-      <div class="flex-grow"></div>
+      <div class="flex-1"></div>
 
       <PrimaryButton
         text="Save"
@@ -29,7 +29,7 @@
       />
     </div>
 
-    <div class="space-y-2 overflow-auto flex-grow">
+    <div class="space-y-2 overflow-auto flex-1">
       {#each $state.apps as app}
         <button
           class={`w-full flex justify-start items-center p-2 border border-secondary rounded-lg space-x-4 ${$state.selectedApps.includes(app.path) ? "bg-secondary" : ""}`}

@@ -1,6 +1,5 @@
 use std::{path::PathBuf, process::Command, thread};
 
-use serde::{Deserialize, Serialize};
 use tauri::Window;
 use tigris_rs::features::{
     actions::{ActionType, CopyImageAction, CopyTextAction, ResultAction, RunExtensionAction},

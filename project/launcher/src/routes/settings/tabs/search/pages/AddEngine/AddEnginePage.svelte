@@ -20,7 +20,7 @@
       }}
     />
 
-    <div class="flex-grow"></div>
+    <div class="flex-1"></div>
 
     <PrimaryButton text="Save" disabled={$state.disableSaveButton} onclick={() => onSave()} />
   </div>

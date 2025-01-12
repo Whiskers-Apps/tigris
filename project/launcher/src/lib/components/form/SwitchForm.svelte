@@ -10,7 +10,7 @@
 </script>
 
 <div class="flex space-x-4">
-  <div class="flex-grow">
+  <div class="flex-1">
     <h3 class="text-lg font-semibold">{title}</h3>
     <p class="text-secondary">{description}</p>
   </div>

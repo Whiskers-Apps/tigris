@@ -20,7 +20,7 @@
   <div class="w-full flex overflow-hidden rounded-full border-accent">
     <input
       type="range"
-      class=" flex-grow"
+      class=" flex-1"
       {min}
       {max}
       {step}

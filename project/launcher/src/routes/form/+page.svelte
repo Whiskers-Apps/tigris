@@ -40,7 +40,7 @@
 
     <HorizontalDivider />
 
-    <div class="p-4 flex-grow overflow-auto space-y-6">
+    <div class="p-4 flex-1 overflow-auto space-y-6">
       {#each $state.form.fields as field}
         <div>
           {#if field.field_type === "Text"}

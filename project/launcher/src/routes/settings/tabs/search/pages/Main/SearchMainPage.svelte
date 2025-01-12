@@ -70,7 +70,7 @@
       <div class="flex">
         <h3 class="text-xl font-semibold">Search Engines</h3>
 
-        <div class="flex-grow"></div>
+        <div class="flex-1"></div>
 
         <TextButton text="Add" onclick={() => onOpenAddEnginePage()} />
       </div>
@@ -85,7 +85,7 @@
 
             <div>{searchEngine.name}</div>
 
-            <div class="flex-grow"></div>
+            <div class="flex-1"></div>
 
             <div class="p-1 pl-2 pr-2 bg-secondary rounded-md">{searchEngine.keyword}</div>
           </button>
@@ -97,7 +97,7 @@
       <div class="flex">
         <h3 class="text-xl font-semibold">Blacklist</h3>
 
-        <div class="flex-grow"></div>
+        <div class="flex-1"></div>
 
         <TextButton
           text="Add"
@@ -129,7 +129,7 @@
 
               <p>{app.name}</p>
 
-              <div class="flex-grow"></div>
+              <div class="flex-1"></div>
 
               <TextButton
                 text="Remove"

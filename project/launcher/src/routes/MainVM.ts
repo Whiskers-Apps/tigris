@@ -26,7 +26,7 @@ export async function load() {
 
   newState.results = getSlicedResults(0);
   newState.totalResultsCount = results.length;
-  newState.accentFilter = getColorFilter("#FFE072");
+  newState.accentFilter = getCssFilter(getSettings().theme.accent);
   newState.loading = false;
 
   state.set(newState);
@@ -46,7 +46,7 @@ export function getColorFilter(tint: string | null): string {
   }
 
   if (tint === "accent") {
-    return getCssFilter(getSettings().theme.accent);
+    return get(state).accentFilter;
   }
 
   return getCssFilter(tint);

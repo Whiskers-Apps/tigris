@@ -33,7 +33,7 @@
 
   <div class="select">
     <button class=" w-full items-center flex gap-4 p-2" onclick={toggleShowOptions}>
-      <p class=" flex-grow text-start">{value.text}</p>
+      <p class=" flex-1 text-start">{value.text}</p>
       {#if showOptions}
         <ChevronUp class=" h-3 w-3" />
       {:else}
