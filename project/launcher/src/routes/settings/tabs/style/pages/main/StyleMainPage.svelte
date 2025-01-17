@@ -8,6 +8,7 @@
   import {
     onExportTheme,
     onImportTheme,
+    onOpenStore,
     onSetAccentBorder,
     onSetAccentColor,
     onSetBackgroundColor,
@@ -24,7 +25,7 @@
     onSetTertiaryBackgroundColor,
     onSetTertiaryTextColor,
     onSetTextColor,
-  } from "./StylePageVM";
+  } from "./StyleMainPageVM";
 </script>
 
 <div class="space-y-6">
@@ -91,8 +92,13 @@
     <h3 class="text-lg font-semibold">Theme</h3>
 
     <div class="flex space-x-4">
-      <TextButton text="Store" onclick={() => {}} />
-      
+      <TextButton
+        text="Store"
+        onclick={() => {
+          onOpenStore();
+        }}
+      />
+
       <TextButton
         text="Import"
         onclick={() => {

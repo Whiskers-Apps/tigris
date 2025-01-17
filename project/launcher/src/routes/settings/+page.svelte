@@ -9,7 +9,7 @@
   import AboutPage from "./tabs/about/AboutPage.svelte";
   import ExtensionsPage from "./tabs/extensions/ExtensionsPage.svelte";
   import SearchPage from "./tabs/search/SearchPage.svelte";
-  import StylePage from "./tabs/style/StylePage.svelte";
+  import StylePage from "./tabs/style/pages/StylePage.svelte";
 
   onMount(() => {
     load();
@@ -79,7 +79,7 @@
     border-right: 1px solid var(--secondary-background);
   }
 
-  .navbar{
+  .navbar {
     width: 240px;
   }
 

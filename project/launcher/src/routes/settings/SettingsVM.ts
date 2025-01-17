@@ -6,7 +6,7 @@ export const state = writable({
 });
 
 export function load() {
-  onSelectTab(3);
+  onSelectTab(2);
 }
 
 // =================================================================
