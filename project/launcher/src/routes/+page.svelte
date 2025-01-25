@@ -80,7 +80,7 @@
                 <p class="">{result.title}</p>
 
                 {#if result.description !== null}
-                  <p class=" text-[0.8rem] ">{result.description}</p>
+                  <p class=" text-[0.8rem]">{result.description}</p>
                 {/if}
               </div>
               {#if $settings.show_shortcut_hint}

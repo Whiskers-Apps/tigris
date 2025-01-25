@@ -10,7 +10,7 @@ export enum StyleSettingsPage {
 }
 
 export const state = writable<StylePageVM>({
-  page: StyleSettingsPage.STORE,
+  page: StyleSettingsPage.MAIN,
 });
 
 export function onGoToPage(page: StyleSettingsPage) {

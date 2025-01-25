@@ -6,6 +6,7 @@ use tigris_rs::features::{
     api::{write_extension_request, write_form, ExtensionRequest},
     apps::{get_apps, get_recent_apps, write_recent_apps, App},
     extensions::get_extension_dir,
+    paths::get_tmp_dir,
 };
 
 #[tauri::command()]
@@ -38,9 +39,10 @@ fn copy_image(action: CopyImageAction, window: &Window) {
         Command::new("sh")
             .arg("-c")
             .arg(format!(
-                "cat {} | wl-copy --type image/png",
+                "magick '{}' tmp.png; wl-copy -t image/png < tmp.png",
                 &action.image_path
             ))
+            .current_dir(get_tmp_dir())
             .spawn()
             .expect("Error copying image");
     });
@@ -124,5 +126,3 @@ pub fn invoke_open_link(link: String) {
         open::that(link).expect("Error opening link");
     });
 }
-
-

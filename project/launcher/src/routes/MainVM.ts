@@ -1,10 +1,10 @@
 import type { SearchResult } from "$lib/features/Results";
 import { Routes } from "$lib/features/Routes";
 import { getCssFilter } from "$lib/features/Theming";
-import { invoke } from "@tauri-apps/api/core";
+import { convertFileSrc, invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { get, writable } from "svelte/store";
-import { getSettings, settings } from "$lib/repositories/SettingsRepository";
+import { getSettings } from "$lib/repositories/SettingsRepository";
 
 export const state = writable({
   loading: true,
@@ -67,6 +67,8 @@ export async function onSearchInput(text: string) {
   newState.results = getSlicedResults(0);
   newState.totalResultsCount = results.length;
   newState.askConfirmation = false;
+
+  console.log(newState.results.map((result) => convertFileSrc(result.icon_path ?? "")));
 
   state.set(newState);
 }
