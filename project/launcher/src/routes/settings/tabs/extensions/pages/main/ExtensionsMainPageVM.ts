@@ -10,6 +10,9 @@ export const state = writable({
   loading: true,
   extensions: [] as Extension[],
   values: [] as ExtensionValue[],
+  updating: false,
+  showDeleteExtensionDialog: false,
+  extensionToDelete: null as string | null,
 });
 
 export async function load() {
@@ -131,4 +134,70 @@ export async function onOpenExtensionsDir() {
 
 export function onOpenStore() {
   onGoToPage(Page.STORE);
+}
+
+export async function onReloadExtensions() {
+  let newState = get(state);
+
+  newState.loading = true;
+
+  state.set(newState);
+
+  await invoke("invoke_reload_extensions");
+
+  newState.extensions = await invoke("invoke_get_extensions");
+  newState.values = getSettings().extension_values;
+  newState.loading = false;
+
+  state.set(newState);
+}
+
+export async function onUpdateExtension(extensionId: string) {
+  let newState = get(state);
+
+  newState.updating = true;
+
+  state.set(newState);
+
+  try {
+    await invoke("invoke_update_extension", { extension_id: extensionId });
+    await invoke("invoke_reload_extensions");
+
+    newState.extensions = await invoke("invoke_get_extensions");
+    newState.values = getSettings().extension_values;
+    newState.updating = false;
+
+    state.set(newState);
+  } catch (error) {
+    console.error(error);
+  }
+
+  newState.updating = false;
+  state.set(newState);
+}
+
+export function onUninstallExtension(extensionId: string) {
+  let newState = get(state);
+  newState.showDeleteExtensionDialog = true;
+  newState.extensionToDelete = extensionId;
+  state.set(newState);
+}
+
+export function onCloseUninstallDialog() {
+  let newState = get(state);
+  newState.showDeleteExtensionDialog = false;
+  newState.extensionToDelete = null;
+  state.set(newState);
+}
+
+export async function onConfirmUninstallExtension() {
+  let newState = get(state);
+  let extensionId = newState.extensionToDelete!!;
+
+  newState.showDeleteExtensionDialog = false;
+  state.set(newState);
+
+  await invoke("invoke_uninstall_extension", { extension_id: extensionId });
+
+  onReloadExtensions();
 }

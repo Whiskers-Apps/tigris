@@ -1,9 +1,11 @@
 use std::{fs, path::PathBuf};
 
+use git2::Repository;
 use serde::{Deserialize, Serialize};
 use tigris_rs::features::{
     apps::{get_apps, App},
-    extensions::{get_extensions, Extension},
+    extensions::{get_extension_dir, get_extensions, Extension},
+    indexing::index_extensions,
     paths::{get_extensions_dir, get_extensions_store_path, get_themes_store_path},
     settings::{get_settings, write_settings, Settings, Theme},
 };
@@ -142,4 +144,60 @@ pub fn invoke_get_themes_store() -> Vec<StoreTheme> {
 pub fn invoke_write_themes_store(store: Vec<StoreTheme>) {
     let bytes = bincode::serialize(&store).expect("Error serializing themes store");
     fs::write(get_themes_store_path(), &bytes).expect("Error writing themes store");
+}
+
+#[tauri::command()]
+pub fn invoke_reload_extensions() {
+    index_extensions();
+}
+
+#[tauri::command(rename_all = "snake_case")]
+pub async fn invoke_update_extension(extension_id: String) -> Result<(), String> {
+    let dir = get_extension_dir(&extension_id).expect("Error getting extension dir");
+    let repo = Repository::discover(&dir).expect("Error getting repository");
+
+    if let Ok(head) = repo.head() {
+        let branch = head
+            .shorthand()
+            .expect("Error getting head branch shorthand")
+            .to_string();
+
+        if let Ok(remote) = repo.find_remote("origin") {
+            remote
+                .clone()
+                .fetch(&[&branch], None, None)
+                .expect("Error fetching repository");
+
+            let oid = repo
+                .refname_to_id(&format!("refs/remotes/origin/{branch}"))
+                .expect("Error getting oid");
+
+            let object = repo.find_object(oid, None).unwrap();
+
+            repo.reset(&object, git2::ResetType::Hard, None)
+                .expect("Error resetting repository");
+
+            return Ok(());
+        }
+
+        return Err(String::from("Error getting code from origin"));
+    }
+
+    Err(String::from("Extension doesn't have a repository"))
+}
+
+#[tauri::command(rename_all = "snake_case")]
+pub async fn invoke_uninstall_extension(extension_id: String) {
+    let dir = get_extension_dir(&extension_id).expect("Error getting extension dir");
+    fs::remove_dir_all(dir).expect("Error removing extension dir");
+
+    let mut settings = get_settings();
+    settings.extension_values = settings
+        .extension_values
+        .iter()
+        .filter(|ev| ev.extension_id != extension_id)
+        .map(|ev| ev.clone())
+        .collect();
+
+    write_settings(&settings);
 }

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import DangerButton from "../buttons/DangerButton.svelte";
   import OutlineButton from "../buttons/OutlineButton.svelte";
   import PrimaryButton from "../buttons/PrimaryButton.svelte";
 
@@ -25,7 +26,7 @@
       <div class="flex justify-end space-x-2">
         <OutlineButton text="Cancel" onclick={() => oncancel()} />
 
-        <PrimaryButton text="Confirm" onclick={() => onconfirm()} />
+        <DangerButton text="Confirm" onclick={() => onconfirm()} />
       </div>
     </div>
   </div>

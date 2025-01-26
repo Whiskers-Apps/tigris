@@ -6,9 +6,14 @@
     getSelectValues,
     getSettingValue,
     load,
+    onCloseUninstallDialog,
+    onConfirmUninstallExtension,
     onOpenExtensionsDir,
     onOpenStore,
+    onReloadExtensions,
     onSetSettingValue,
+    onUninstallExtension,
+    onUpdateExtension,
     state,
   } from "./ExtensionsMainPageVM";
   import HorizontalDivider from "$lib/components/components/HorizontalDivider.svelte";
@@ -18,6 +23,7 @@
   import type { SelectValue } from "$lib/components/form/helper-classes/SelectValue";
   import SwitchForm from "$lib/components/form/SwitchForm.svelte";
   import SliderForm from "$lib/components/form/SliderForm.svelte";
+  import ConfirmationDialog from "$lib/components/form/ConfirmationDialog.svelte";
 
   onMount(() => {
     load();
@@ -28,13 +34,21 @@
   <div class="flex space-x-4">
     <TextButton
       text="Store"
+      disabled={$state.updating}
       onclick={() => {
         onOpenStore();
       }}
     />
-    <TextButton text="Refresh" onclick={() => {}} />
     <TextButton
-      text="Folder"
+      text="Refresh"
+      disabled={$state.updating}
+      onclick={() => {
+        onReloadExtensions();
+      }}
+    />
+    <TextButton
+      text="Open Extensions Folder"
+      disabled={$state.updating}
       onclick={() => {
         onOpenExtensionsDir();
       }}
@@ -114,11 +128,36 @@
         </div>
 
         <div class="flex justify-end space-x-4">
-          <TextButton text="Update" onclick={() => {}} />
+          <TextButton
+            text="Update"
+            disabled={$state.updating}
+            onclick={() => {
+              onUpdateExtension(extension.id);
+            }}
+          />
 
-          <TextButton text="Uninstall" danger={true} onclick={() => {}} />
+          <TextButton
+            text="Uninstall"
+            disabled={$state.updating}
+            danger={true}
+            onclick={() => {
+              onUninstallExtension(extension.id);
+            }}
+          />
         </div>
       </div>
     {/each}
+
+    <ConfirmationDialog
+      show={$state.showDeleteExtensionDialog}
+      title="Delete Extension"
+      message="Are you sure you want to delete this extension?"
+      oncancel={() => {
+        onCloseUninstallDialog();
+      }}
+      onconfirm={() => {
+        onConfirmUninstallExtension();
+      }}
+    />
   </div>
 {/if}
