@@ -57,11 +57,25 @@ export async function load() {
   });
 
   setState(newState);
+
+  await fetchThemesStore();
+
+  newState.themes = await getThemesStore();
+
+  newState.themes.forEach((theme) => {
+    newState.selectedValues.set(theme.id, {
+      id: theme.files[0].link,
+      text: theme.files[0].name,
+    });
+  });
+
+  setState(newState);
 }
 
 export function onGoBack() {
   let newState = getState();
   newState.searchValue = "";
+  setState(newState);
 
   onGoToPage(StyleSettingsPage.MAIN);
 }

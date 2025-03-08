@@ -26,7 +26,7 @@
   }
 </script>
 
-<div>
+<div class="space-y-2">
   <h3 class="text-xl font-semibold">{title}</h3>
 
   <p class="text-secondary">{description}</p>

@@ -3,8 +3,8 @@ import { type ExtensionValue } from "$lib/features/Settings";
 import { invoke } from "@tauri-apps/api/core";
 import { get, writable } from "svelte/store";
 import type { SelectValue } from "$lib/components/form/helper-classes/SelectValue";
-import { getSettings, writeSettings } from "$lib/repositories/SettingsRepository";
-import { onGoToPage, Page } from "../../ExtensionsPageVM";
+import { getSettings, refreshSettings, writeSettings } from "$lib/repositories/SettingsRepository";
+import { onGoToPage, ExtensionsSettingsPage } from "../../ExtensionsPageVM";
 
 export const state = writable({
   loading: true,
@@ -133,7 +133,7 @@ export async function onOpenExtensionsDir() {
 }
 
 export function onOpenStore() {
-  onGoToPage(Page.STORE);
+  onGoToPage(ExtensionsSettingsPage.STORE);
 }
 
 export async function onReloadExtensions() {
@@ -146,10 +146,16 @@ export async function onReloadExtensions() {
   await invoke("invoke_reload_extensions");
 
   newState.extensions = await invoke("invoke_get_extensions");
+
+  refreshSettings();
+
   newState.values = getSettings().extension_values;
   newState.loading = false;
 
-  state.set(newState);
+  // Add delay to have time to write the settings and extensions files
+  setTimeout(() => {
+    state.set(newState);
+  }, 1000);
 }
 
 export async function onUpdateExtension(extensionId: string) {

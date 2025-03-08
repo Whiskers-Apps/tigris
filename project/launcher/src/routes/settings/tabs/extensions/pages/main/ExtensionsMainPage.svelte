@@ -30,7 +30,9 @@
   });
 </script>
 
-{#if !$state.loading}
+{#if $state.loading}
+  
+{:else}
   <div class="flex space-x-4">
     <TextButton
       text="Store"
@@ -139,7 +141,6 @@
           <TextButton
             text="Uninstall"
             disabled={$state.updating}
-            danger={true}
             onclick={() => {
               onUninstallExtension(extension.id);
             }}

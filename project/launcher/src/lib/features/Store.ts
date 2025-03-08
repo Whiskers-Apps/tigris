@@ -31,7 +31,17 @@ export async function getThemesStore(): Promise<StoreTheme[]> {
   return await invoke("invoke_get_themes_store");
 }
 
-export async function fetchExtensionsStore() {}
+export async function fetchExtensionsStore() {
+  axios
+    .get(
+      "https://raw.githubusercontent.com/Whiskers-Apps/tigris-store/refs/heads/master/store/extensions.json"
+    )
+    .then((response) => {
+      let store: StoreExtension[] = response.data;
+      invoke("invoke_write_extensions_store", { store: store });
+    })
+    .catch((error) => console.error(error));
+}
 
 export async function fetchThemesStore() {
   axios

@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { state, Page } from "./ExtensionsPageVM";
+  import { state, ExtensionsSettingsPage } from "./ExtensionsPageVM";
   import MainPage from "./pages/main/ExtensionsMainPage.svelte";
-  import StorePage from "./pages/store/ExtensionsStore.svelte";
+  import StorePage from "./pages/store/ExtensionsStorePage.svelte";
 </script>
 
-{#if $state.page == Page.MAIN}
+{#if $state.page == ExtensionsSettingsPage.MAIN}
   <MainPage />
 {/if}
 
-{#if $state.page == Page.STORE}
+{#if $state.page == ExtensionsSettingsPage.STORE}
   <StorePage />
 {/if}

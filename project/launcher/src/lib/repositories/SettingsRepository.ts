@@ -9,6 +9,10 @@ export async function load() {
   settings.set(await invoke("invoke_get_settings"));
 }
 
+export async function refreshSettings() {
+  settings.set(await invoke("invoke_get_settings"));
+}
+
 export function getSettings(): Settings {
   return get(settings);
 }

@@ -3,7 +3,7 @@ use features::{
     form::{invoke_complete_form, invoke_get_form},
     search::invoke_get_search_results,
     settings::{
-        invoke_export_theme, invoke_get_blacklisted_apps, invoke_get_extension_store, invoke_get_extensions, invoke_get_settings, invoke_get_themes_store, invoke_get_whitelisted_apps, invoke_import_theme, invoke_open_extensions_dir, invoke_reload_extensions, invoke_uninstall_extension, invoke_update_extension, invoke_write_extensions_store, invoke_write_settings, invoke_write_themes_store
+        invoke_export_theme, invoke_get_blacklisted_apps, invoke_get_extensions, invoke_get_extensions_store, invoke_get_settings, invoke_get_themes_store, invoke_get_whitelisted_apps, invoke_import_theme, invoke_install_extension, invoke_open_extensions_dir, invoke_reload_extensions, invoke_uninstall_extension, invoke_update_extension, invoke_write_extensions_store, invoke_write_settings, invoke_write_themes_store
     },
 };
 
@@ -31,13 +31,14 @@ pub fn run() {
             invoke_get_form,
             invoke_complete_form,
             invoke_open_extensions_dir,
-            invoke_get_extension_store,
+            invoke_get_extensions_store,
             invoke_write_extensions_store,
             invoke_get_themes_store,
             invoke_write_themes_store,
             invoke_reload_extensions,
             invoke_update_extension,
-            invoke_uninstall_extension
+            invoke_uninstall_extension,
+            invoke_install_extension
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

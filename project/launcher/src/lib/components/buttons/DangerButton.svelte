@@ -8,17 +8,16 @@
   let { text, disabled = $bindable(false), onclick }: Props = $props();
 </script>
 
-<button {onclick} class="flex justify-center items-center primary-button" {disabled}>
+<button {onclick} class="flex text-sm justify-center items-center primary-button" {disabled}>
   <p>{text}</p>
 </button>
 
 <style scoped>
   .primary-button {
     background-color: var(--danger);
-    padding: 6px 10px 6px 10px;
-    border-radius: 9999px;
+    padding: 8px 12px 8px 12px;
+    border-radius: 12px;
     color: var(--on-danger);
-    font-weight: 600;
   }
 
   .primary-button:hover:enabled {

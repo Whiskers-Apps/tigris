@@ -10,6 +10,7 @@
     onSave,
     onCloseDeleteDialog,
     onDelete,
+    onSetDefault,
   } from "./EditEnginePageVM";
   import BackButton from "$lib/components/buttons/BackButton.svelte";
   import { state } from "./EditEnginePageVM";
@@ -17,6 +18,8 @@
   import PrimaryButton from "$lib/components/buttons/PrimaryButton.svelte";
   import DangerButton from "$lib/components/buttons/DangerButton.svelte";
   import ConfirmationDialog from "$lib/components/form/ConfirmationDialog.svelte";
+  import TextButton from "$lib/components/buttons/TextButton.svelte";
+  import SwitchForm from "$lib/components/form/SwitchForm.svelte";
 
   const props = $props<{ id: number }>();
 
@@ -38,9 +41,9 @@
 
       <div class="flex-1"></div>
 
-      <DangerButton text="Delete" onclick={() => onShowDeleteDialog()} />
+      <TextButton text="Delete" onclick={() => onShowDeleteDialog()} />
 
-      <PrimaryButton text="Save" disabled={$state.disableSaveButton} onclick={() => onSave()} />
+      <TextButton text="Save" disabled={$state.disableSaveButton} onclick={() => onSave()} />
     </div>
 
     <TextForm
@@ -68,6 +71,15 @@
       value={$state.query}
       errorMessage={$state.queryError}
       oninput={(value) => onQueryInput(value)}
+    />
+
+    <SwitchForm
+      title="Default"
+      description="Make it the default search engine"
+      value={$state.default}
+      onswitch={(value) => {
+        onSetDefault(value);
+      }}
     />
   </div>
 

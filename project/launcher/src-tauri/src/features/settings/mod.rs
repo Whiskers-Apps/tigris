@@ -103,7 +103,7 @@ pub fn invoke_open_extensions_dir() {
 }
 
 #[tauri::command()]
-pub fn invoke_get_extension_store() -> Vec<StoreExtension> {
+pub fn invoke_get_extensions_store() -> Vec<StoreExtension> {
     let store_path = get_extensions_store_path();
 
     if !store_path.exists() {
@@ -147,7 +147,7 @@ pub fn invoke_write_themes_store(store: Vec<StoreTheme>) {
 }
 
 #[tauri::command()]
-pub fn invoke_reload_extensions() {
+pub async fn invoke_reload_extensions() {
     index_extensions();
 }
 
@@ -200,4 +200,24 @@ pub async fn invoke_uninstall_extension(extension_id: String) {
         .collect();
 
     write_settings(&settings);
+}
+
+#[tauri::command()]
+pub async fn invoke_install_extension(link: String) {
+    let url_split: Vec<&str> = link.split("/").collect();
+    let user = url_split[3].to_lowercase();
+    let mut repo_name = url_split[url_split.len() - 1].to_owned();
+
+    if repo_name.ends_with(".git") {
+        repo_name = repo_name.trim_end_matches(".git").to_owned();
+    }
+
+    let folder_name = format!("{user}-{repo_name}");
+
+    let mut path = get_extensions_dir();
+    path.push(folder_name);
+
+    Repository::clone(&link, path).expect("Error cloning repo");
+
+    invoke_reload_extensions().await;
 }

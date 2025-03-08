@@ -9,18 +9,24 @@
   export const { text, danger = false, disabled = $bindable(false), onclick }: Props = $props();
 </script>
 
-<button class="text-button" {onclick} {disabled}>
-  <div class={`${disabled ? "text-disabled" : danger ? "text-danger" : "text-accent"}`}>
+<button class="text-button text-sm" {onclick} {disabled}>
+  <div class={`${disabled ? "text-disabled" : danger ? "text-danger" : "text-text"}`}>
     <p>{text}</p>
   </div>
 </button>
 
 <style scoped>
+  .text-button {
+    padding: 8px 12px 8px 12px;
+    border: 1px solid var(--secondary-background);
+    border-radius: 12px;
+  }
   .text-button:disabled {
     color: var(--disabled-text);
+    background-color: var(--secondary-background);
   }
 
   .text-button:enabled:hover {
-    text-decoration-line: underline;
+    background-color: var(--tertiary-background);
   }
 </style>

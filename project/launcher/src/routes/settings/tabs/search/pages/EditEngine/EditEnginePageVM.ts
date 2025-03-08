@@ -9,6 +9,7 @@ export const state = writable({
   keyword: "",
   name: "",
   query: "",
+  default: false,
   disableSaveButton: false,
   keywordError: null as string | null,
   nameError: null as string | null,
@@ -16,7 +17,7 @@ export const state = writable({
   showDeleteDialog: false,
 });
 
-export function load(id: number) {
+export async function load(id: number) {
   let engine = getSettings().search_engines.find((engine) => engine.id === id)!!;
   let newState = get(state);
 
@@ -25,6 +26,7 @@ export function load(id: number) {
   newState.keyword = engine.keyword;
   newState.name = engine.name;
   newState.query = engine.query;
+  newState.default = getSettings().default_search_engine === newState.id;
 
   state.set(newState);
 }
@@ -57,6 +59,12 @@ export function onQueryInput(text: string) {
   validateForms();
 }
 
+export function onSetDefault(value: boolean) {
+  let newState = get(state);
+  newState.default = value;
+  state.set(newState);
+}
+
 export function onGoBack() {
   clearState();
 
@@ -66,8 +74,8 @@ export function onGoBack() {
 }
 
 export function onSave() {
-  let newSettings = getSettings();
-  let engines = newSettings.search_engines;
+  let settings = getSettings();
+  let engines = settings.search_engines;
   let newState = get(state);
 
   let newEngines = engines.map((engine: SearchEngine) => {
@@ -83,9 +91,13 @@ export function onSave() {
     return engine;
   });
 
-  newSettings.search_engines = newEngines;
+  settings.search_engines = newEngines;
 
-  writeSettings(newSettings);
+  if (newState.default) {
+    settings.default_search_engine = newState.id;
+  }
+
+  writeSettings(settings);
 
   onGoBack();
 }

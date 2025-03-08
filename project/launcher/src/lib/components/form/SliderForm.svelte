@@ -67,8 +67,8 @@
     width: 25px;
     height: 25px;
     background: var(--background);
-    box-shadow: -2000px 0 0 1990px var(--accent);
-    border: 2px solid var(--accent);
+    box-shadow: -2000px 0 0 1990px var(--text);
+    border: 2px solid var(--text);
     border-radius: 999px;
   }
 

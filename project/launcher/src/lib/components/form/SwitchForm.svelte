@@ -43,7 +43,7 @@
     right: 0;
     bottom: 0;
     background-color: var(--background);
-    border: 2px solid var(--accent);
+    border: 2px solid var(--text);
   }
 
   .slider:before {
@@ -54,11 +54,11 @@
     left: 0px;
     bottom: 1px;
     background-color: var(--background);
-    border: 2px solid var(--accent);
+    border: 2px solid var(--text);
   }
 
   input:checked + .slider {
-    background-color: var(--accent);
+    background-color: var(--text);
   }
 
   input:checked + .slider:before {

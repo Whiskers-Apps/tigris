@@ -48,7 +48,7 @@
   {:else}
     <div class="space-y-4">
       {#each $state.themes as theme}
-        <div class="p-2 border border-secondary rounded-lg text-lg space-y-4">
+        <div class="p-4 border border-secondary rounded-lg text-lg space-y-4">
           <SelectForm
             title={theme.name}
             description=""
@@ -60,9 +60,9 @@
           />
 
           <div class="flex space-x-2 items-center">
-            <PersonIcon class="w-6 h-6" />
+            <PersonIcon class="w-4 h-4" />
 
-            <p class="flex-1">{theme.author}</p>
+            <p class="flex-1 text">{theme.author}</p>
 
             <TextButton
               text="Apply"

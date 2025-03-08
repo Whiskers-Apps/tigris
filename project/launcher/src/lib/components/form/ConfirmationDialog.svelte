@@ -2,6 +2,7 @@
   import DangerButton from "../buttons/DangerButton.svelte";
   import OutlineButton from "../buttons/OutlineButton.svelte";
   import PrimaryButton from "../buttons/PrimaryButton.svelte";
+  import TextButton from "../buttons/TextButton.svelte";
 
   type Props = {
     show: boolean;
@@ -24,7 +25,7 @@
       </div>
 
       <div class="flex justify-end space-x-2">
-        <OutlineButton text="Cancel" onclick={() => oncancel()} />
+        <TextButton text="Cancel" onclick={() => oncancel()} />
 
         <DangerButton text="Confirm" onclick={() => onconfirm()} />
       </div>
