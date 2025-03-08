@@ -30,9 +30,6 @@
   });
 </script>
 
-{#if $state.loading}
-  
-{:else}
   <div class="flex space-x-4">
     <TextButton
       text="Store"
@@ -161,4 +158,3 @@
       }}
     />
   </div>
-{/if}

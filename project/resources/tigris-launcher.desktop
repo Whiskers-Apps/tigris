@@ -1,0 +1,27 @@
+[Desktop Entry]
+Actions=launcher;tray;
+Comment[en_US]=An easy to use launcher
+Comment=An easy to use launcher
+Exec=tigris-tray
+GenericName[en_US]=
+GenericName=
+Icon=tigris
+MimeType=
+Name[en_US]=Tigris Launcher
+Name=Tigris Launcher
+NoDisplay=false
+StartupNotify=false
+Terminal=false
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+
+[Desktop Action launcher]
+Exec=WEBKIT_DISABLE_COMPOSITING_MODE=1 GDK_BACKEND=x11 tigris-launcher
+Icon=tigris
+Name=Open Launcher
+
+[Desktop Action tray]
+Exec=tigris-tray
+Icon=tigris
+Name=Open Tray

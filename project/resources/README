@@ -1,0 +1,5 @@
+How to install?
+Run the command `make install` inside the folder
+
+How to uninstall?
+Run the command `make uninstall` inside the folder
