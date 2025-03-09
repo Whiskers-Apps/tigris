@@ -42,6 +42,16 @@ export async function load() {
   newState.loading = false;
 
   state.set(newState);
+
+  await fetchExtensionsStore();
+
+  extensions = await getExtensionsStore();
+
+  newState.extensions = extensions;
+  installedExtensions = await invoke("invoke_get_extensions");
+  newState.installedExtensions = installedExtensions.map((extension) => extension.id);
+
+  state.set(newState);
 }
 
 export function onGoBack() {
