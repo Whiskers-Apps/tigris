@@ -2,9 +2,10 @@ import type { SearchResult } from "$lib/features/Results";
 import { Routes } from "$lib/features/Routes";
 import { getCssFilter } from "$lib/features/Theming";
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
-import { getCurrentWindow } from "@tauri-apps/api/window";
+import { getCurrentWindow, PhysicalSize } from "@tauri-apps/api/window";
 import { get, writable } from "svelte/store";
-import { getSettings } from "$lib/repositories/SettingsRepository";
+import { getSettings, settings } from "$lib/repositories/SettingsRepository";
+import { listen } from "@tauri-apps/api/event";
 
 export const state = writable({
   loading: true,
@@ -30,6 +31,12 @@ export async function load() {
   newState.loading = false;
 
   state.set(newState);
+
+  const _ = await listen("show", (_event) => {
+    onSearchInput("");
+    document.getElementById("search")?.focus();
+    (document.getElementById("search") as HTMLInputElement).value = "";
+  });
 }
 
 // ================================================================
@@ -195,7 +202,7 @@ export function onRunAction() {
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "Escape": {
-      getCurrentWindow().close();
+      getCurrentWindow().hide();
       break;
     }
 

@@ -1,0 +1,23 @@
+[Desktop Entry]
+Actions=tigris-launch;
+Comment[en_US]=An easy to use launcher
+Comment=An easy to use launcher
+Exec=env WEBKIT_DISABLE_COMPOSITING_MODE=1 GDK_BACKEND=wayland tigris-launcher
+GenericName[en_US]=
+GenericName=
+Icon=tigris
+MimeType=
+Name[en_US]=Tigris Launcher
+Name=Tigris Launcher
+NoDisplay=false
+StartupNotify=false
+Terminal=false
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+X-Desktop-File-Install-Version=0.28
+
+[Desktop Action tigris-launch]
+Exec=tigris-show
+Icon=tigris
+Name=Show Window

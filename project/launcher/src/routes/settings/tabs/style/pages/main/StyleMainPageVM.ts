@@ -3,18 +3,37 @@ import {
   setAccentBorder,
   setBoxBorderRadius,
   setBoxBorderWidth,
+  setHeight,
   setIconBorderRadius,
   setResultBorderRadius,
   setTheme,
+  setWidth,
 } from "$lib/repositories/SettingsRepository";
-import { path } from "@tauri-apps/api";
 import { invoke } from "@tauri-apps/api/core";
 import { downloadDir } from "@tauri-apps/api/path";
 import { save, open } from "@tauri-apps/plugin-dialog";
 import { load as loadSettings } from "$lib/repositories/SettingsRepository";
 import { refreshCSS } from "$lib/components/layouts/MainLayoutVM";
-import { Routes } from "$lib/features/Routes";
 import { onGoToPage, StyleSettingsPage } from "../StylePageVM";
+import { getCurrentWindow, PhysicalSize } from "@tauri-apps/api/window";
+
+export function onSetHeight(value: number) {
+  setHeight(value);
+
+  // getCurrentWindow().setResizable(true);
+  getCurrentWindow().setSize(new PhysicalSize(getSettings().width, value));
+  getCurrentWindow().center();
+  // getCurrentWindow().setResizable(false);
+}
+
+export function onSetWidth(value: number) {
+  setWidth(value);
+
+  // getCurrentWindow().setResizable(true);
+  getCurrentWindow().setSize(new PhysicalSize(value, getSettings().height));
+  getCurrentWindow().center();
+  // getCurrentWindow().setResizable(false);
+}
 
 export function onSetBoxBorderRadius(value: number) {
   setBoxBorderRadius(value);

@@ -8,7 +8,7 @@ export const state = writable({
 });
 
 export function load() {
-  onSelectTab(3);
+  onSelectTab(0);
 }
 
 // =================================================================
@@ -23,6 +23,8 @@ export function onSelectTab(index: number) {
   let newState = get(state);
   newState.activeTab = index;
   state.set(newState);
+
+  document.getElementById("settings-page")?.scrollTo({ top: 0 });
 }
 
 document.addEventListener("keydown", (event) => {

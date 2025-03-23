@@ -1,4 +1,6 @@
 export interface Settings {
+  width: number;
+  height: number;
   show_recent_apps: boolean;
   box_border_radius: number;
   border_width: number;

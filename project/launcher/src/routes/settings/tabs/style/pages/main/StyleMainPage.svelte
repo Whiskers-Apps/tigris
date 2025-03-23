@@ -16,6 +16,7 @@
     onSetBoxBorderWidth,
     onSetDangerColor,
     onSetDisabledTextColor,
+    onSetHeight,
     onSetIconBorderRadius,
     onSetOnAccentColor,
     onSetOnDangerColor,
@@ -25,10 +26,35 @@
     onSetTertiaryBackgroundColor,
     onSetTertiaryTextColor,
     onSetTextColor,
+    onSetWidth,
   } from "./StyleMainPageVM";
 </script>
 
 <div class="space-y-6">
+  <SliderForm
+    title="Height"
+    description="The window height"
+    max={1080}
+    min={420}
+    step={10}
+    value={$settings.height}
+    onslide={(value) => {
+      onSetHeight(value);
+    }}
+  />
+
+  <SliderForm
+    title="Width"
+    description="The window width"
+    max={1920}
+    min={660}
+    step={10}
+    value={$settings.width}
+    onslide={(value) => {
+      onSetWidth(value);
+    }}
+  />
+
   <SliderForm
     title="Box Border Radius"
     description="The roundness of the search box"

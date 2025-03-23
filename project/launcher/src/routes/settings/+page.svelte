@@ -56,7 +56,7 @@
           <p>Extensions</p>
         </button>
       </div>
-      <div class="flex-1 overflow-auto break-all p-4 min-h-0">
+      <div class="flex-1 overflow-auto break-all p-4 min-h-0" id="settings-page">
         {#if $state.activeTab === 0}
           <AboutPage />
         {/if}

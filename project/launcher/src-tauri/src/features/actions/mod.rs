@@ -31,7 +31,7 @@ fn copy_text(action: CopyTextAction, window: &Window) {
             .expect("Error writing to clipboard");
     });
 
-    window.close().unwrap();
+    window.hide().unwrap();
 }
 
 fn copy_image(action: CopyImageAction, window: &Window) {
@@ -47,7 +47,7 @@ fn copy_image(action: CopyImageAction, window: &Window) {
             .expect("Error copying image");
     });
 
-    window.close().unwrap();
+    window.hide().unwrap();
 }
 
 fn open_app(path: String, window: &Window) {
@@ -91,7 +91,7 @@ fn open_app(path: String, window: &Window) {
         write_recent_apps(new_recent_apps[0..cut_size].to_owned());
     });
 
-    window.close().unwrap();
+    window.hide().unwrap();
 }
 
 fn open_link(link: String, window: &Window) {
@@ -99,7 +99,7 @@ fn open_link(link: String, window: &Window) {
         open::that(link).expect("Error opening link");
     });
 
-    window.close().unwrap();
+    window.hide().unwrap();
 }
 
 fn run_extension(action: RunExtensionAction, window: &Window) {
@@ -117,7 +117,7 @@ fn run_extension(action: RunExtensionAction, window: &Window) {
             .expect("Error running extension");
     });
 
-    window.close().unwrap();
+    window.hide().unwrap();
 }
 
 #[tauri::command()]

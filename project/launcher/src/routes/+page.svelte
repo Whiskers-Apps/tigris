@@ -31,6 +31,7 @@
         oninput={(value) => {
           onSearchInput(value);
         }}
+        id="search"
       />
     </div>
 

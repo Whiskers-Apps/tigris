@@ -93,3 +93,19 @@ export function setTheme(theme: Theme) {
 
   refreshCSS();
 }
+
+export function setHeight(value: number) {
+  let newSettings = getSettings();
+  newSettings.height = value;
+  writeSettings(newSettings);
+
+  refreshCSS();
+}
+
+export function setWidth(value: number) {
+  let newSettings = getSettings();
+  newSettings.width = value;
+  writeSettings(newSettings);
+
+  refreshCSS();
+}

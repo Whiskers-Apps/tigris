@@ -14,13 +14,10 @@
       {
         "title": "tigris-launcher",
         "width": 900,
-        "maxWidth": 900,
         "height": 660,
-        "maxHeight": 660,
         "center": true,
         "transparent": true,
         "maximizable": false,
-        "resizable": false,
         "alwaysOnTop": true,
         "decorations": false
       }

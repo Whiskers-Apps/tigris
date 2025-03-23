@@ -2,10 +2,11 @@
   const props = $props<{
     placeholder: string;
     value: string;
+    id?: string;
     oninput: (value: string) => void;
   }>();
 
-  let { placeholder, value, oninput } = props;
+  let { placeholder, value, id = null, oninput } = props;
 </script>
 
 <!-- svelte-ignore a11y_autofocus -->
@@ -16,6 +17,7 @@
   {value}
   oninput={(e) => oninput(e.currentTarget.value)}
   autofocus
+  {id}
 />
 
 <style scoped>

@@ -12,6 +12,11 @@
     "clipboard-manager:allow-write-image",
     "dialog:default",
     "fs:default",
-    "fs:read-all"
+    "fs:read-all",
+    "core:window:allow-hide",
+    "core:window:allow-show",
+    "core:window:allow-set-size",
+    "core:window:allow-set-resizable",
+    "core:window:allow-center"
   ]
 }
