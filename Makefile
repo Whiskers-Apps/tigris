@@ -13,8 +13,9 @@ SHOW_BIN := "$(LAUNCHER_TARGET_DIR)/release/tigris-show"
 VERSION := $(shell grep -E '^version = ' project/launcher/src-tauri/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
 RELEASE_DIR := "tigris-launcher-$(VERSION)-linux-x86_64"
 
-release:
+default:
 	mkdir -p $(RELEASE_DIR)
+	cd $(LAUNCHER_DIR) && yarn install
 	cd $(LAUNCHER_DIR) && cargo tauri build
 	cd $(SHOW_DIR) && cargo build --release
 	cp $(LAUNCHER_BIN) $(SHOW_BIN) $(RELEASE_DIR)
@@ -23,5 +24,4 @@ release:
 	cp $(RESOURCES_DIR)/Makefile $(RELEASE_DIR)
 	cp $(RESOURCES_DIR)/README $(RELEASE_DIR)
 	tar -caf "$(RELEASE_DIR).tar.xz" $(RELEASE_DIR)
-	rm -rf $(RELEASE_DIR)	
-
+	rm -rf $(RELEASE_DIR)
