@@ -139,7 +139,7 @@ fn get_app_result(app: &App, settings: &Settings) -> SearchResult {
 fn get_search_engine_result(search_engine: &SearchEngine, search_text: &str) -> SearchResult {
     SearchResult::new(&search_engine.name)
         .set_description(&format!("Search for {}", &search_text))
-        .set_icon_path(&get_icons_dir().join("search.svg"))
+        .set_icon_path(&get_icons_dir().join("web.svg"))
         .set_icon_color("accent")
         .set_action(&ResultAction::new_open_link_action(&OpenLinkAction::new(
             &format!("{}", &search_engine.query).replace("%s", &search_text),
