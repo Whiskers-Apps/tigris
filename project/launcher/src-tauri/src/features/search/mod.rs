@@ -1,6 +1,7 @@
 use std::{path::PathBuf, process::Command};
 
 use sniffer_rs::sniffer::Sniffer;
+use tauri::Window;
 use tigris_rs::features::{
     actions::{OpenAppAction, OpenLinkAction, ResultAction},
     api::{get_extension_results, write_extension_request, ExtensionRequest},
@@ -11,6 +12,15 @@ use tigris_rs::features::{
     search_results::SearchResult,
     settings::{get_settings, SearchEngine, Settings},
 };
+
+#[tauri::command]
+pub async fn fix_transparent_window(window: Window) {
+    let mut size = window.outer_size().unwrap();
+
+    size.height = if size.height == 900 { 901 } else { 900 };
+
+    let _ = window.set_size(size);
+}
 
 #[tauri::command(rename_all = "snake_case")]
 pub fn invoke_get_search_results(search_text: String) -> Vec<SearchResult> {

@@ -1,10 +1,10 @@
 import type { SearchResult } from "$lib/features/Results";
 import { Routes } from "$lib/features/Routes";
 import { getCssFilter } from "$lib/features/Theming";
-import { convertFileSrc, invoke } from "@tauri-apps/api/core";
-import { getCurrentWindow, PhysicalSize } from "@tauri-apps/api/window";
+import { getCurrentWindow, } from "@tauri-apps/api/window";
 import { get, writable } from "svelte/store";
-import { getSettings, settings } from "$lib/repositories/SettingsRepository";
+import { getSettings, } from "$lib/repositories/SettingsRepository";
+import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 
 export const state = writable({
@@ -32,11 +32,12 @@ export async function load() {
 
   state.set(newState);
 
-  const _ = await listen("show", (_event) => {
+  await listen("show", (_event) => {
     onSearchInput("");
     document.getElementById("search")?.focus();
     (document.getElementById("search") as HTMLInputElement).value = "";
   });
+
 }
 
 // ================================================================
@@ -66,6 +67,7 @@ export function getColorFilter(tint: string | null): string {
 export async function onSearchInput(text: string) {
   let newState = get(state);
 
+  invoke("fix_transparent_window");
   results = await invoke("invoke_get_search_results", { search_text: text });
 
   newState.offset = 0;
@@ -75,9 +77,9 @@ export async function onSearchInput(text: string) {
   newState.totalResultsCount = results.length;
   newState.askConfirmation = false;
 
-  console.log(newState.results.map((result) => convertFileSrc(result.icon_path ?? "")));
 
   state.set(newState);
+  invoke("fix_transparent_window");
 }
 
 export function onGoDown() {
@@ -164,7 +166,9 @@ export function onSelectResult(index: number, fromShortcut: boolean = false) {
   }
 }
 
-export function onRunAction() {
+export async function onRunAction() {
+  invoke("fix_transparent_window");
+
   let newState = get(state);
   let result = newState.results[newState.selectedIndex];
   let action = result.action;
@@ -193,6 +197,8 @@ export function onRunAction() {
       invoke("invoke_run_action", { action: action });
     }
   }
+
+  invoke("fix_transparent_window");
 }
 
 // ================================================================

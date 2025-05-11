@@ -19,7 +19,7 @@ pub fn setup_tray(app: &App) {
     TrayIconBuilder::new()
         .icon(app.default_window_icon().unwrap().clone())
         .menu(&menu)
-        .menu_on_left_click(true)
+        .show_menu_on_left_click(true)
         .on_menu_event(|app, event| match event.id.as_ref() {
             "show" => {
                 UnixStream::connect("/tmp/tigris-show").expect("Error sending stream");

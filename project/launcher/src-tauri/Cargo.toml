@@ -22,18 +22,21 @@ tauri = { version = "2", features = ["protocol-asset", "tray-icon"] }
 tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+
 tigris-rs = { path = "/home/lighttigerxiv/dev/whiskers-apps/pc/tigris-rs", features = [
     "launcher",
 ] }
+
 sniffer-rs = "1.1.2"
-tauri-plugin-clipboard-manager = "2.2.0"
-open = "5.3.1"
-tokio = { version = "1.42.0", features = ["full"] }
+tauri-plugin-clipboard-manager = "2.2.2"
+open = "5.3.2"
+tokio = { version = "1.44.2", features = ["full"] }
 tauri-plugin-dialog = "2"
-image = "0.25.5"
+image = "0.25.6"
 bincode = "1.3.3"
 tauri-plugin-fs = "2"
-git2 = "0.20.0"
+git2 = "0.20.1"
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-positioner = "2"
 tauri-plugin-single-instance = "2"

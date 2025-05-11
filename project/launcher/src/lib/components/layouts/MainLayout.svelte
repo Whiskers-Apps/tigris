@@ -2,17 +2,18 @@
   import { onMount } from "svelte";
   import { load, state } from "./MainLayoutVM";
 
-  onMount(() => {
+  onMount(async () => {
     load();
   });
 </script>
 
 {#if !$state.loading}
   {@html $state.css}
-
-  <div
-    class="bg-background box-radius box-border h-screen w-full flex-1 flex flex-col text-text"
-  >
-    <slot />
+  <div class=" h-screen flex items-top">
+    <div
+      class="bg-background box-radius box-border flex-1 flex flex-col text-text main-content h-fit"
+    >
+      <slot />
+    </div>
   </div>
 {/if}

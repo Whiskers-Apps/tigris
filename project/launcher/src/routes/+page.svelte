@@ -39,8 +39,8 @@
 
     <div class="flex-1 w-full p-4 flex flex-col justify-center">
       {#if $state.totalResultsCount === 0}
-        <div class="flex flex-col h-full items-center justify-center">
-          <CatIcon />
+        <div class="flex h-full items-center justify-center space-x-2">
+          <CatIcon class="h-10 w-10" />
           <p>No Results</p>
         </div>
       {/if}
@@ -86,7 +86,8 @@
               </div>
               {#if $settings.show_shortcut_hint}
                 <p class="text-accent flex-shrink-0">
-                  {getUpperCasedFirstLetter($settings.shortcut_key)} + {index + 1}
+                  {getUpperCasedFirstLetter($settings.shortcut_key)} + {index +
+                    1}
                 </p>
               {/if}
             </button>
@@ -95,7 +96,7 @@
       </div>
     </div>
 
-    {#if $state.totalResultsCount > 0}
+    {#if $state.totalResultsCount > 1}
       <HorizontalDivider />
 
       <div class="p-5 pl-6 pr-6">

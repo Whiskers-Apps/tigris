@@ -17,7 +17,7 @@
 </script>
 
 <MainLayout>
-  <div class="flex flex-col h-screen overflow-hidden">
+  <div class="flex flex-col h-[700px] overflow-hidden">
     <div class="flex p-6 space-x-4">
       <BackButton onclick={() => onGoBack()} />
 
@@ -56,7 +56,10 @@
           <p>Extensions</p>
         </button>
       </div>
-      <div class="flex-1 overflow-auto break-all p-4 min-h-0" id="settings-page">
+      <div
+        class="flex-1 overflow-auto break-all p-4 min-h-0"
+        id="settings-page"
+      >
         {#if $state.activeTab === 0}
           <AboutPage />
         {/if}

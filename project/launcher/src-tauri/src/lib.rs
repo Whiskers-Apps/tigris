@@ -9,7 +9,7 @@ use features::{
     dirs::setup_dirs,
     form::{invoke_complete_form, invoke_get_form},
     indexing::setup_indexing,
-    search::invoke_get_search_results,
+    search::{fix_transparent_window, invoke_get_search_results},
     settings::{
         invoke_export_theme, invoke_get_blacklisted_apps, invoke_get_extensions,
         invoke_get_extensions_store, invoke_get_settings, invoke_get_themes_store,
@@ -21,14 +21,14 @@ use features::{
     tray::setup_tray,
 };
 use serde::Serialize;
-use tauri::{Emitter, Manager, PhysicalSize};
-use tigris_rs::features::settings::get_settings;
+use tauri::{Emitter, Manager, PhysicalSize, WebviewUrl, WebviewWindowBuilder};
 
 pub mod features;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_positioner::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_single_instance::init(|_app, _args, _cwd| {}))
         .plugin(tauri_plugin_clipboard_manager::init())
@@ -55,12 +55,12 @@ pub fn run() {
             invoke_reload_extensions,
             invoke_update_extension,
             invoke_uninstall_extension,
-            invoke_install_extension
+            invoke_install_extension,
+            fix_transparent_window
         ])
         .setup(|app| {
-            let window = &app.get_webview_window("main").unwrap();
-
-            let _ = window.hide();
+            let window = app.handle().get_webview_window("main").unwrap();
+            let _ = window.close();
 
             setup_tray(&app);
             setup_dirs();
@@ -76,16 +76,30 @@ pub fn run() {
 
                 for stream in listener.incoming() {
                     if let Ok(_) = stream {
-                        let window = app_clone.get_webview_window("main").unwrap();
+                        let main_window = &app_clone.get_webview_window("main");
+
+                        let window = if let Some(main_window) = main_window {
+                            main_window.clone()
+                        } else {
+                            WebviewWindowBuilder::new(
+                                &app_clone,
+                                "main",
+                                WebviewUrl::App("/".into()),
+                            )
+                            .transparent(true)
+                            .shadow(false)
+                            .decorations(false)
+                            .auto_resize()
+                            .resizable(false)
+                            .build()
+                            .unwrap()
+                        };
+
+                        if !main_window.is_some() {
+                            let _ = window.set_size(PhysicalSize::new(900.0, 900.0));
+                        }
 
                         let _ = window.show();
-                        let _ = window.set_focus().unwrap();
-
-                        let settings = get_settings();
-
-                        let _ = window.set_resizable(true);
-                        let _ = window.center();
-                        let _ = window.set_size(PhysicalSize::new(settings.width, settings.height));
 
                         #[derive(Serialize, Clone)]
                         struct Payload {}
@@ -99,5 +113,12 @@ pub fn run() {
         })
         .build(tauri::generate_context!())
         .expect("error while running tauri application")
-        .run(|_, _| {});
+        .run(|_, event| {
+            match event {
+                tauri::RunEvent::ExitRequested { api, .. } => {
+                    api.prevent_exit();
+                }
+                _ => {}
+            };
+        });
 }

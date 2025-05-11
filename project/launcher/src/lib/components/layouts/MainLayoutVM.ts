@@ -1,30 +1,33 @@
 import type { Settings } from "$lib/features/Settings";
 import { get, writable } from "svelte/store";
 import { getSettings, load as loadSettings } from "$lib/repositories/SettingsRepository";
+import { invoke } from "@tauri-apps/api/core";
 export const state = writable({
-  loading: true,
-  css: "",
+    loading: true,
+    css: "",
 });
 
 export async function load() {
-  await loadSettings();
+    invoke("fix_transparent_window");
 
-  let newState = get(state);
+    await loadSettings();
 
-  newState.loading = false;
-  newState.css = getCss(getSettings());
+    let newState = get(state);
 
-  state.set(newState);
+    newState.loading = false;
+    newState.css = getCss(getSettings());
+
+    state.set(newState);
 }
 
 export function refreshCSS() {
-  let newState = get(state);
-  newState.css = getCss(getSettings());
-  state.set(newState);
+    let newState = get(state);
+    newState.css = getCss(getSettings());
+    state.set(newState);
 }
 
 function getCss(settings: Settings): string {
-  return `
+    return `
 <style>
 
 :root{
@@ -43,6 +46,11 @@ function getCss(settings: Settings): string {
     --box-border-width: ${settings.border_width}px;
     --result-radius: ${settings.result_border_radius}px;
     --icon-radius: ${settings.icon_border_radius}px;
+}
+
+.main-content{
+    width: ${settings.width}px;
+    max-width: ${settings.width}px;
 }
 
 /* 
@@ -91,12 +99,10 @@ function getCss(settings: Settings): string {
 }
 
 .box-border{
-    /*border: var(--box-border-width) solid var(${
-      settings.accent_border ? "--accent" : "bg-secondary"
-    });*/
-    border: var(--box-border-width) solid var(${
-      settings.accent_border ? "--accent" : "--secondary-background"
-    });
+    /*border: var(--box-border-width) solid var(${settings.accent_border ? "--accent" : "bg-secondary"
+        });*/
+    border: var(--box-border-width) solid var(${settings.accent_border ? "--accent" : "--secondary-background"
+        });
 }
 
 /* 

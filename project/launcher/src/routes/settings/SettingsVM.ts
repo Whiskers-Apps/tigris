@@ -1,6 +1,6 @@
 import { Routes } from "$lib/features/Routes";
 import { event } from "@tauri-apps/api";
-import { getCurrentWindow } from "@tauri-apps/api/window";
+import { invoke } from "@tauri-apps/api/core";
 import { get, writable } from "svelte/store";
 
 export const state = writable({
@@ -27,7 +27,7 @@ export function onSelectTab(index: number) {
   document.getElementById("settings-page")?.scrollTo({ top: 0 });
 }
 
-document.addEventListener("keydown", (event) => {
+document.addEventListener("keydown", async (event) => {
   if (event.key === "Escape") {
     window.location.replace(Routes.SEARCH);
   }
