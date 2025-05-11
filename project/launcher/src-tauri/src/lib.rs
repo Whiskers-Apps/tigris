@@ -9,7 +9,7 @@ use features::{
     dirs::setup_dirs,
     form::{invoke_complete_form, invoke_get_form},
     indexing::setup_indexing,
-    search::{fix_transparent_window, invoke_get_search_results},
+    search::invoke_get_search_results,
     settings::{
         invoke_export_theme, invoke_get_blacklisted_apps, invoke_get_extensions,
         invoke_get_extensions_store, invoke_get_settings, invoke_get_themes_store,
@@ -19,6 +19,7 @@ use features::{
         invoke_write_themes_store,
     },
     tray::setup_tray,
+    window::refresh_window,
 };
 use serde::Serialize;
 use tauri::{Emitter, Manager, PhysicalSize, WebviewUrl, WebviewWindowBuilder};
@@ -56,7 +57,7 @@ pub fn run() {
             invoke_update_extension,
             invoke_uninstall_extension,
             invoke_install_extension,
-            fix_transparent_window
+            refresh_window
         ])
         .setup(|app| {
             let window = app.handle().get_webview_window("main").unwrap();

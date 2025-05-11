@@ -11,6 +11,7 @@ LAUNCHER_BIN := "$(LAUNCHER_TARGET_DIR)/release/tigris-launcher"
 SHOW_BIN := "$(LAUNCHER_TARGET_DIR)/release/tigris-show"
 SETTINGS_ICON := "$(ICONS_DIR)/settings.svg"
 WEB_ICON := "$(ICONS_DIR)/web.svg"
+FILE_ICON := "$(ICONS_DIR)/file.svg"
 
 # Release
 VERSION := $(shell grep -E '^version = ' project/launcher/src-tauri/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
@@ -26,7 +27,6 @@ default:
 	cp $(RESOURCES_DIR)/tigris-launcher.desktop $(RELEASE_DIR)
 	cp $(RESOURCES_DIR)/Makefile $(RELEASE_DIR)
 	cp $(RESOURCES_DIR)/README $(RELEASE_DIR)
-	cp $(SETTINGS_ICON) $(RELEASE_DIR)
-	cp $(WEB_ICON) $(RELEASE_DIR)
+	cp $(SETTINGS_ICON) $(WEB_ICON) $(FILE_ICON) $(RELEASE_DIR)
 	tar -caf "$(RELEASE_DIR).tar.xz" $(RELEASE_DIR)
 	rm -rf $(RELEASE_DIR)

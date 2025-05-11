@@ -15,4 +15,4 @@ install:
 	sudo desktop-file-install tigris-launcher.desktop
 	sudo cp tigris.png /usr/share/pixmaps
 	mkdir -p $(ICONS_DIR)
-	cp web.svg settings.svg $(ICONS_DIR)
+	cp web.svg settings.svg file.svg $(ICONS_DIR)

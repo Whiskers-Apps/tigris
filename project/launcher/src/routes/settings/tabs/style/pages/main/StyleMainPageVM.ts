@@ -20,31 +20,30 @@ import { getCurrentWindow, PhysicalSize } from "@tauri-apps/api/window";
 export function onSetHeight(value: number) {
   setHeight(value);
 
-  // getCurrentWindow().setResizable(true);
   getCurrentWindow().setSize(new PhysicalSize(getSettings().width, value));
   getCurrentWindow().center();
-  // getCurrentWindow().setResizable(false);
 }
 
 export function onSetWidth(value: number) {
   setWidth(value);
 
-  // getCurrentWindow().setResizable(true);
   getCurrentWindow().setSize(new PhysicalSize(value, getSettings().height));
   getCurrentWindow().center();
-  // getCurrentWindow().setResizable(false);
 }
 
 export function onSetBoxBorderRadius(value: number) {
   setBoxBorderRadius(value);
+  invoke("refresh_window");
 }
 
 export function onSetBoxBorderWidth(value: number) {
   setBoxBorderWidth(value);
+  invoke("refresh_window");
 }
 
 export function onSetAccentBorder(value: boolean) {
   setAccentBorder(value);
+  invoke("refresh_window");
 }
 
 export function onSetResultBorderRadius(value: number) {
@@ -88,6 +87,8 @@ export function onSetOnAccentColor(value: string) {
   newTheme.on_accent = value;
 
   setTheme(newTheme);
+
+  invoke("refresh_window");
 }
 
 export function onSetDangerColor(value: string) {

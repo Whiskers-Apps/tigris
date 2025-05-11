@@ -67,7 +67,7 @@ export function getColorFilter(tint: string | null): string {
 export async function onSearchInput(text: string) {
   let newState = get(state);
 
-  invoke("fix_transparent_window");
+  invoke("refresh_window");
   results = await invoke("invoke_get_search_results", { search_text: text });
 
   newState.offset = 0;
@@ -79,7 +79,7 @@ export async function onSearchInput(text: string) {
 
 
   state.set(newState);
-  invoke("fix_transparent_window");
+  invoke("refresh_window");
 }
 
 export function onGoDown() {
@@ -167,7 +167,7 @@ export function onSelectResult(index: number, fromShortcut: boolean = false) {
 }
 
 export async function onRunAction() {
-  invoke("fix_transparent_window");
+  invoke("refresh_window");
 
   let newState = get(state);
   let result = newState.results[newState.selectedIndex];
@@ -198,7 +198,7 @@ export async function onRunAction() {
     }
   }
 
-  invoke("fix_transparent_window");
+  invoke("refresh_window");
 }
 
 // ================================================================

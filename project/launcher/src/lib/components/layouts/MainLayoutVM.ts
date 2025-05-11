@@ -8,7 +8,7 @@ export const state = writable({
 });
 
 export async function load() {
-    invoke("fix_transparent_window");
+    invoke("refresh_window");
 
     await loadSettings();
 
