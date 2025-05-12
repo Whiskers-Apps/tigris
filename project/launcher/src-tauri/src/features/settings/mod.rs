@@ -2,7 +2,7 @@ use std::{fs, path::PathBuf};
 
 use git2::Repository;
 use serde::{Deserialize, Serialize};
-use tigris_rs::features::{
+use tigris_core::features::{
     apps::{get_apps, App},
     extensions::{get_extension_dir, get_extensions, Extension},
     indexing::index_extensions,

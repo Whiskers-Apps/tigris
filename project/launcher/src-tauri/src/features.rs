@@ -1,7 +1,9 @@
 pub mod actions;
+pub mod app;
 pub mod dirs;
 pub mod form;
 pub mod indexing;
+pub mod paths;
 pub mod search;
 pub mod settings;
 pub mod tray;

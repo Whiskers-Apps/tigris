@@ -1,6 +1,6 @@
 use std::fs::create_dir_all;
 
-use tigris_rs::features::paths::{
+use tigris_core::features::paths::{
     get_cache_dir, get_config_dir, get_extensions_dir, get_local_dir, get_store_dir, get_tmp_dir,
 };
 

@@ -5,7 +5,7 @@ use tauri::{
     tray::TrayIconBuilder,
     App,
 };
-use tigris_rs::features::indexing::{index_apps, index_extensions};
+use tigris_core::features::indexing::{index_apps, index_extensions};
 
 pub fn setup_tray(app: &App) {
     let show_menu_item = MenuItem::with_id(app, "show", "Show", true, None::<&str>).unwrap();

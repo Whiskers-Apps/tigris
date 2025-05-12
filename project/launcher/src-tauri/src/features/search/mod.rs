@@ -1,10 +1,9 @@
 use std::{path::PathBuf, process::Command};
 
 use sniffer_rs::sniffer::Sniffer;
-use tigris_rs::features::{
+use tigris_core::features::{
     actions::{OpenAppAction, OpenLinkAction, ResultAction},
     api::{get_extension_results, write_extension_request, ExtensionRequest},
-    apps::{get_apps, get_recent_apps, App},
     extensions::get_extension_dir,
     paths::get_icons_dir,
     search::get_search_query,
@@ -12,23 +11,34 @@ use tigris_rs::features::{
     settings::{get_settings, SearchEngine, Settings},
 };
 
+use super::{
+    app::App,
+    indexing::{get_apps, get_recent_apps},
+};
+
 #[tauri::command(rename_all = "snake_case")]
-pub fn invoke_get_search_results(search_text: String) -> Vec<SearchResult> {
+pub fn invoke_get_search_results(search_text: String) -> Result<Vec<SearchResult>, String> {
     let mut results = Vec::<SearchResult>::new();
     let settings = get_settings();
-    let blacklisted_apps = &settings.blacklist;
+    let blacklisted_apps: Vec<PathBuf> = settings
+        .blacklist
+        .clone()
+        .iter()
+        .map(|path| PathBuf::from(path))
+        .collect();
 
     if search_text.trim().is_empty() {
         return if settings.show_recent_apps {
             let recent_apps: Vec<SearchResult> = get_recent_apps()
+                .map_err(|e| e.to_string())?
                 .iter()
                 .filter(|app| !blacklisted_apps.contains(&app.path))
                 .map(|app| get_app_result(app, &settings))
                 .collect();
 
-            recent_apps
+            Ok(recent_apps)
         } else {
-            vec![]
+            Ok(vec![])
         };
     }
 
@@ -56,7 +66,7 @@ pub fn invoke_get_search_results(search_text: String) -> Vec<SearchResult> {
                 .expect("Error running extension");
 
             if result.status.success() {
-                return get_extension_results();
+                return Ok(get_extension_results());
             }
         }
 
@@ -72,7 +82,7 @@ pub fn invoke_get_search_results(search_text: String) -> Vec<SearchResult> {
                 &search_query.search_text,
             ));
 
-            return results;
+            return Ok(results);
         }
     }
 
@@ -90,8 +100,8 @@ pub fn invoke_get_search_results(search_text: String) -> Vec<SearchResult> {
     let sniffer = Sniffer::new();
 
     let apps: Vec<SearchResult> = get_apps()
-        .iter()
-        .map(|app| app.to_owned())
+        .unwrap_or(vec![])
+        .into_iter()
         .filter(|app| {
             sniffer.matches(&app.name, &search_text) && !blacklisted_apps.contains(&app.path)
         })
@@ -111,7 +121,7 @@ pub fn invoke_get_search_results(search_text: String) -> Vec<SearchResult> {
         }
     }
 
-    results
+    Ok(results)
 }
 
 fn get_app_result(app: &App, settings: &Settings) -> SearchResult {

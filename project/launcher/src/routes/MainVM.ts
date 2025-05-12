@@ -32,10 +32,21 @@ export async function load() {
 
   state.set(newState);
 
-  await listen("show", (_event) => {
-    onSearchInput("");
-    document.getElementById("search")?.focus();
+  await listen("show", async (_event) => {
     (document.getElementById("search") as HTMLInputElement).value = "";
+    document.getElementById("search")?.focus();
+
+    results = await invoke("invoke_get_search_results", { search_text: "" });
+    let newState = get(state);
+
+    newState.offset = 0;
+    newState.selectedIndex = 0;
+    newState.searchText = "";
+    newState.results = getSlicedResults(0);
+    newState.totalResultsCount = results.length;
+    newState.askConfirmation = false;
+
+    state.set(newState);
   });
 
 }

@@ -1,6 +1,6 @@
 use std::{process::Command, thread};
 
-use tigris_rs::features::{
+use tigris_core::features::{
     actions::{
         FieldType::{FileSystem, Select, Slider, Switch, Text, TextArea},
         OpenFormAction,

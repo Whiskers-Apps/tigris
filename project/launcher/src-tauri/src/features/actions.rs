@@ -1,12 +1,16 @@
 use std::{path::PathBuf, process::Command, thread};
 
 use tauri::Window;
-use tigris_rs::features::{
+use tigris_core::features::{
     actions::{ActionType, CopyImageAction, CopyTextAction, ResultAction, RunExtensionAction},
     api::{write_extension_request, write_form, ExtensionRequest},
-    apps::{get_apps, get_recent_apps, write_recent_apps, App},
     extensions::get_extension_dir,
     paths::get_tmp_dir,
+};
+
+use super::{
+    app::App,
+    indexing::{get_apps, get_recent_apps, write_recent_apps},
 };
 
 #[tauri::command()]
@@ -40,7 +44,7 @@ fn copy_image(action: CopyImageAction, window: &Window) {
             .arg("-c")
             .arg(format!(
                 "magick '{}' tmp.png; wl-copy -t image/png < tmp.png",
-                &action.image_path
+                &action.image_path.into_os_string().into_string().unwrap()
             ))
             .current_dir(get_tmp_dir())
             .spawn()
@@ -50,13 +54,8 @@ fn copy_image(action: CopyImageAction, window: &Window) {
     window.hide().unwrap();
 }
 
-fn open_app(path: String, window: &Window) {
+fn open_app(path: PathBuf, window: &Window) {
     thread::spawn(move || {
-        let desktop_file_dir = PathBuf::from(&path)
-            .parent()
-            .expect("Error reading parent directory")
-            .to_owned();
-
         let desktop_file_name = PathBuf::from(&path)
             .file_name()
             .expect("Error getting app file name")
@@ -64,19 +63,19 @@ fn open_app(path: String, window: &Window) {
 
         Command::new("gtk-launch")
             .arg(desktop_file_name)
-            .current_dir(desktop_file_dir)
+            .current_dir(dirs::home_dir().unwrap())
             .spawn()
             .expect("Error opening app");
 
         let app = get_apps()
-            .iter()
-            .map(|app| app.to_owned())
+            .unwrap_or(vec![])
+            .into_iter()
             .find(|app| &app.path == &path)
             .unwrap();
 
         let mut new_recent_apps: Vec<App> = get_recent_apps()
-            .iter()
-            .map(|app| app.to_owned())
+            .unwrap_or(vec![])
+            .into_iter()
             .filter(|app| &app.path != &path)
             .collect();
 
@@ -88,7 +87,7 @@ fn open_app(path: String, window: &Window) {
             16
         };
 
-        write_recent_apps(new_recent_apps[0..cut_size].to_owned());
+        let _ = write_recent_apps(new_recent_apps[0..cut_size].to_owned());
     });
 
     window.hide().unwrap();
